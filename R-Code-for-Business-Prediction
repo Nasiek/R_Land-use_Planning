@@ -1,0 +1,265 @@
+#Ken Steif
+#MUSA 507/CPLN 590
+
+#R BUSINESS SITE SUITABILIY FORECASTING RUN THROUGH - PREDICTING STARBUCKS REVENUE
+
+#Let's see if we can predict the sales volume of coffee shops given the spatial and aspatial qualities of 
+#coffee shops in PA
+
+#Start by importing the data into R from the provided shapefile.  Call the data frame 'biz'. Variable descriptions can
+#be found in the shapefile metadata.
+
+#install and load the appropriate packages.
+
+library(corrplot)
+library(reshape2)
+library(caret) 
+library(AppliedPredictiveModeling)
+library(stargazer)
+
+#  PART 1 - Explanatory analysis ----------------------------------------------------------------------------
+
+#Create two dataframes. The first is what we use to "train" the model and the second will be used to "test" the model.
+#The test model will be those Starbucks locations I have previously designated using the variable 'newStrbck'
+training <- biz[ which(biz$newStrbck == 0), ]
+testing <- biz[ which(biz$newStrbck == 1), ]
+
+#For the first part we're going to work exclusively with the training dataset.
+#Let's clean up the dataset and create one that is just the variables we're interested in. Were going to do this using
+#'column indices' to subset different columns of the training data frame. There are many ways to subset data in R - 
+#this is one way. A column index is just the column number.
+
+#For example:
+training[,2]  #the second column
+head(midtrain)
+
+#the function 'head' returns only the first 5 rows. Next we're going to return the tenth THROUGH twelth column.
+head(Properties[, 1:12])
+propstrain <- properties
+#this line of code returns the first 5 rows of the 10th AND 12th column
+head(training[, c(10,12)])
+head(Properties)
+#now were going to subset to create a training dataset of just the dependent and independent variables
+trainprop <- Properties(,1,2,11,12)  #create a new data frame of most of the ind. variables
+trainprop <- Properties[1,2,11,12]
+training2 <- training2[,-5] #removes one column from that
+training3 <- training[, c(2, 12,10)] # include three other columns
+training4 <- cbind(training2, training3) #merge together the pertinent variables
+#rename these data frames appropriately and remove the excess data frames that we no longer need
+training2 <- training4
+remove(training3, training4)
+#you should notice the dependent variables 'SALES_VOL' is the last variable of training2
+head(trainhouse5)
+#Now lets output a table of summary statistics. Change 'type' to html to copy/paste the data in to Excel
+stargazer(QTrain70, type="text", title = "Summary Statistics")
+
+#Now were going to create a matrix using the corrplot package
+trainprop3[is.na(trainprop3)] <- 0
+cor(traisummarynhouse, use="pairwise.complete.obs")
+TH <- cor(trainhouse5)
+M[is.na(M)] <- 0
+TH
+
+head(trainprop3)
+TP <- cor(trainprop3)
+#returns correlation for each variable to all the others. Here is a pretty correlation matrix plot.
+#check the help for corrplot. There are a bunch of different methods for creating these graphics
+corrplot(TH, method = "number")
+
+install.packages("DAAG")
+library(DAAG)
+CVT <- lm(Sale.Price ~ Market.Value + Taxable.Land + Taxable.Building+ Exempt.Land + Category.Code + Total.Area + Year.Built + Total.Livable.Area, data=trainhouse5)
+CV <- CVlm(data=trainhouse5, CVT, m=8)
+exists("fit")
+
+#m=5 sets it to 5 folds
+mse <- attr(BD5ols, "ms")
+rmse <- sqrt(mse)    #Obtaining RMSE for model 1
+rmse
+#Now were going to see how generalizable some of these ind. variables are across both Starbucks and Dunkin Donuts.
+#The following lines of code do the same thing as above to create the 'training2' data frame but this time using
+#only Starbucks and Dunkin Donuts locations.
+#Create a new data frame of just starbucks and DD locations
+StarbucksOrDunkin <- biz[ which(biz$CONAME == "DUNKIN' DONUTS" | biz$CONAME == "STARBUCKS" ), ]
+#create a dummy variablefor DD
+StarbucksOrDunkin$isDunkin = ifelse(StarbucksOrDunkin$CONAME == "DUNKIN' DONUTS" ,1,0)
+#create a new data frame of just the important variables.
+SD2 <- StarbucksOrDunkin[,22:40] #create a new data frame of most of the ind. variables
+SD2 <- SD2[,-5] #removes one column from that
+SD3 <- StarbucksOrDunkin[, c(12,10)] # include to other columns
+SD4 <- cbind(SD2, SD3) #merge together the pertiant variables
+
+#The melt function reformats the data in "long" form which we can use for the below plot
+SDMelt <- melt(trainhouse5, id.vars = c("Sale.Price"))
+#get rid of some extraneous data frames.
+remove(SD2,SD3, SD4, StarbucksOrDunkin)
+
+#Lastly we're going to plot these differences using boxplots and ggplot's 'facet' feature which can create many
+#sub-plots 
+ggplot(data = SDMelt, aes(Sale.Price, value)) +
+  geom_boxplot(aes(fill=as.factor(Sale.Price))) +  facet_wrap(~variable,scales="free",ncol=6) +
+  scale_fill_discrete(name = "1 = Dunkin Donuts") +
+  ggtitle("Variable distributions across Starbucks and Dunkin' Donuts") 
+
+
+#-----------------------------------------------------------------------------------------------------------
+#  PART 2 - In Sample prediction ----------------------------------------------------------------------------
+
+#Finally, let's build a regression using the training set.  This is what we call an 'in-sample' regression
+reg <- lm(SALES_VOL ~ distHwy + CoffeeDist + DistShop +	popDens +	POP + HHs + Families + Homes + Med_Inc + Med_Rent	+
+          Med_Value	+ Pct_White + Pct_le_5yr + Avg_HHSze + Pct_Col2 + Pct_BlPov + distEmpC + NUMBER_EMP, 
+          data = training2) 
+summary(CVT)
+
+#Lets see what happens if we plot the predicted values from this regression against the actual sales values
+#this is a measure of how well our predictions are relative to observed values.
+#If the predictions were perfect, the scatterplot would aline on the red
+xyplot(trainhouse5$Sale.Price ~ CVT$fitted.values, type = c("p", "r"), xlab = "Predicted", ylab = "Observed", col.line = "red")
+
+#Let's see if any of this predictive variation is spatial in nature. To do this, were going to have to map these 
+#predictions in ArcGIS.
+#First create a dataframe of the predicted values and the FID which we can join back to the shapefile in ArcGIS
+predForArcGIS <- cbind(BD5train$X, CVT$fitted.values)
+
+colnames(predForArcGIS) <- c("X", "Predicted")
+#now write it out to the C: Make sure you specifc your own folder and watch the direction of the slashes
+write.csv(predForArcGIS, file = "C:/Users/Keisan/Documents/CPLN590/predForArcGIS.csv")
+
+
+#lets see what happens if we include controls for Dunkin Donuts
+Proptest <- Properties
+trainhouse5$Sale.Price = ifelse(trainhouse5$CONAME == "DUNKIN' DONUTS" ,1,0)
+
+reg2 <- lm(SALES_VOL ~ distHwy + CoffeeDist + DistShop +  popDens +  POP + HHs + Families + Homes + Med_Inc + Med_Rent  +
+                Med_Value	+ Pct_White + Pct_le_5yr + Avg_HHSze + Pct_Col2 + Pct_BlPov + distEmpC + NUMBER_EMP + isDunkin, 
+              data = training2) 
+summary(reg2)
+
+#now lets plot the predicted aganst the observed again with the new model that controls for the dunkin/starbucks
+#difference
+xyplot(log(BD5train$Sale_Pri_1) ~ log(predict(BD5ols)), type = c("p", "r"), xlab = "Observed", ylab = "Predicted", col.line = "red")
+
+xyplot(log(resid(BD5ols)) ~ log(predict(BD5ols)), type = c("p", "r"), xlab = "Residuals", ylab = "Predicted", col.line = "red")
+
+xyplot(log(BD5train$Sale_Pri_1) ~ log(resid(BD5ols)), type = c("p", "r"), xlab = "Observed", ylab = "Residuals", col.line = "red")
+
+
+#-----------------------------------------------------------------------------------------------------------
+#  PART 3 - Out of sample prediction 1 --------------------------------------------------------------------------
+
+#If you're trying to make predictions and all you have are observations from past buinesses, how do you assess
+#how well your model predicts? Let's talk about 'out of sample prediction'. This is really the crux of predictive
+#modeling.
+
+#To begin, we're going to see how well the regression predicts if we split the training set into two different data 
+#frames. We're going to take a 75% random sample as a training set, leaving the remaining data as the test set.
+
+Subtrain <- createDataPartition(y = trainhouse5$Market.Value, p = .75, list = FALSE)
+rand1train <- trainhouse5[ Subtrain,] #the new training set
+rand2Test <- trainhouse5[-Subtrain,]  #the new test set
+nrow(rand1train) #how many rows are in our new training set
+
+#now run the regression on the random1Train data frame
+Khan <- lm(Market.Value ~ Frontage + Depth + Total.Area +  Total.Livable.Area +	Exempt.Building + Exempt.Land + Taxable.Land + Sale.Price, 
+          data = rand1train) 
+summary(Khan)
+stargazer(Khan, CVT, type = "html")
+
+#subject these predictions on to the random2Test test set data
+Khan2 <- predict(Khan, rand2Test)
+#notice that the lenth of this list = the length of SALES_VOL observations in random2Test - one prediction for each
+#SALES_VOL observation.
+length(Khan2 )
+length(Khan2 ) == length(rand2Test$Market.Value )
+
+#in this case we actually do have observed locations that we want to predict for the coffee locations that.
+#so let's plot that. 
+
+plot(Khan2, rand2Test$Market.Value) #still looks pretty good
+
+#now create a new data frame where one column is the dependent variable values 'SALES_VOL' from random2Test 
+#(Which is column 19), and a second column which is the predicted values from our above regression (reg2)
+Khan2val <- data.frame(obs = rand2Test[,2], pred = Khan2)
+
+#Finally regress these predicted values from reg2 on to the SALES_VOL from the random2Test data frame
+defaultSummary(Khan2val)
+
+#lets take a closer look at the model error.
+#first what is the mean SALES_VOL
+mean(trainhouse5$Sale.Price)
+
+#now the mean residual or error from the regression aka the 'mean absolute error'
+mean(abs(Khan$residuals))
+
+#manually calculate RMSE. 
+sqrt(mean(abs(Khan$residuals^2)))
+
+#------------------------------------------------------------------------------------------------------------------
+#  PART 4 - Cross validation time.------------------------------------------------------------------
+
+#were going to use the original training set
+
+#Perform 10-fold cross validation
+#begin by specifying the type of resampling (cross validation)
+CvT2 <- trainControl(method = "cv", number = 10)
+#run the cross validation - note that here with the use of the '.' we are using all the variables in that dataframe
+#In other words, we are not writing the ind. variables out one by one.
+
+lmfit5 <- train(Sale.Price ~ ., data=trainhouse5, method = "lm", trControl=fitControl,
+lmfit5
+#lists everything in your environment 
+ls()
+#removes things from the environment 
+rm(list = ls())
+#why did you get this warning?
+summary(lmfit5)
+trainhouse5 <- trainhouse5[,-14] #removes one column from that data frame
+
+#now run it again.
+
+
+#plot the residuals against the predicted and observed
+xyplot(residuals(CVT) ~ predict(CVT), type = c("p", "g"), xlab = "Predicted", ylab = "Residuals", col.line = "red")
+xyplot(residuals(CVT) ~ trainhouse5$Sale.Price, type = c("p", "g"), xlab = "Observed", ylab = "Residuals", col.line = "red")
+
+
+#------------------------------------------------------------------------------------------------------------------
+#  PART 5 - Out of sample prediction 2 - Starbucks------------------------------------------------------------------
+
+#Recall that reg is the regression on just the FULL SET of training data. 
+#Now were going to use that to predict for the 17 candidate starbucks locations
+
+#Then of course, because we actually have the SALES_VOL figures for those starbucks, we will calculate some
+#error
+
+#subject these predictions on to the testing data frame w/ the 17 candidate locations
+regPredStarbucks <- predict(reg, testing)
+
+#now create a new data frame where one column is the dependent variable 'SALES_VOL' from testing 
+#(Which is column 10)
+regPredStarbucksValues <- data.frame(obs = testing[,10], pred = regPredStarbucks)
+
+head(regPredStarbucksValues)
+
+#Finally regress these predicted values from reg2 on to the SALES_VOL from the random2Test data frame
+defaultSummary(regPredStarbucksValues)
+
+#calculate the difference and percent change between observed and predicted
+regPredStarbucksValues$diff <- regPredStarbucksValues$obs - regPredStarbucksValues$pred
+regPredStarbucksValues$diffP <- (regPredStarbucksValues$obs - regPredStarbucksValues$pred) / regPredStarbucksValues$obs
+
+#now the mean residual or error from the regression 'reg' aka the 'mean absolute error' aka the MAE
+mean(abs(regPredStarbucksValues$diff))
+
+#calculate the MAPE - or mean absolute percent error aka MAPE
+mean(abs(regPredStarbucksValues$diffP))
+
+#update this data frame to include the FID field
+regPredStarbucksValues <- cbind(testing$FID, regPredStarbucksValues)
+
+#change columns names and output for arcgis
+colnames(regPredStarbucksValues) <- c("FID", "observed", "predicted", "diff", "diffPct")
+write.csv(regPredStarbucksValues, file = "C:/Users/kennethsteif/regPredStarbucksValues.csv")
+
+
+#
