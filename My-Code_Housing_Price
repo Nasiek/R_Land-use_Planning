@@ -8,6 +8,480 @@ install.packages("dplyr")
 install.packages("stringr")
 install.packages("lazyeval")
 install.packages("hexbin")
+
+library(hexbin)
+library(car)
+library(sunflowerplot)
+library(lazyeval)
+library(stringr)
+library(tidyr)
+library(corrplot)
+library(reshape2)
+library(caret) 
+library(AppliedPredictiveModeling)
+library(stargazer)
+library(dplyr)
+
+head(BD5TRAIN)
+
+Violations2 <- Violations %>% separate(Location, c("Lat", "Long"))
+Violations2 <- Violations %>% separate(Violations, Location, c("Lat", "Long"), sep = " ", remove = FALSE, convert = TRUE, extra = "warn", fill = "warn",)
+Violations2016 <- read.csv("C:/Users/Keisan/Documents/CPLN590/Violations2016.csv", header = TRUE, row.names = NULL)
+gsub( "POINT (", "", as.character(Violations$Location) n)
+Violations2 <- gsub("C([0-7]+)_.*", "\\1", Violations$Location)
+Property <- read.csv("C:/Users/Keisan/DOcuments/CPLN590/MIDTERM/DATA/Propertyfile.csv", header = TRUE, row.names = NULL)
+View(Property)
+View(Property)
+View(Violations)
+Violations <- read.csv("C:/Users/Keisan/Downloads/LI_Violations2016.csv", header = TRUE, row.names = NULL)
+stringsAsFactors= TRUE,
+stringsAsFactors= TRUE,
+strip.white = TRUE)
+Property <- read.table("C:/Users/Keisan/DOcuments/CPLN590/MIDTERM/DATA/Propertyfile.csv", header = TRUE, fill = TRUE)
+separate(Violations, Location, c("Lat11", "Long11"), sep = " ")
+Violationstest2 <- gsub("POINT ", "", Violations$Location)
+vlocsplit= gsub("POINT", "", Location)
+V4 <- gsub("\\(|\\)", "", V3)
+gsub("\\[|\\]", "", n)
+View(V4)
+V5 <- separate(V4, x, c("Lat11","Long11"), sep = " ")
+V5 <- merge(Violations[Violations$year=="2014",], test[test$year=="2015",], by = "p1", all = TRUE)
+Violations2 <- Violations + as.data.frame(V4)
+dataFrame$newColumn <- dataFrame$oldColumn1 + dataFrame$oldColumn2
+LocDataFrame <- (V4 c("Location")))
+V4df <- data.frame(as.list(V4)) 
+V4DF <- data.frame(lapply(V4, type.convert), stringsAsFactors=FALSE)
+V4DF2 <- data.frame(keyName=names(V4), value=V4, row.names=NULL)
+require(reshape2)
+Violations$Locations2 <- rownames(V4) 
+melt(V4)
+Violationstest <- Violations
+read.table(text=gsub("^[^(]+\(|\)", "", Violations$Location),
+           header=FALSE, col.names = c("lat", "lon"), stringsAsFactors=FALSE)
+
+Violations = data.frame(Location = "POINT (-7423249 453982)")
+Violations$Lat = strsplit(as.character(Violations$Location)," ")[[1]][2]
+Violations$Lat = as.numeric(gsub("\\(","",Violations$Lat))
+Violations$Lon = strsplit(as.character(Violations$Location)," ")[[1]][3]
+Violations$Lon = as.numeric(gsub("\\)","",Violations$Lat))
+
+
+ViolationsTest <- structure(list(Location = c("POINT (-7423249 453982)", 
+                                              "POINT (-7412345 453321)"
+)), .Names = "Location", row.names = c(NA, -2L), class = "data.frame")
+
+
+read.table(text=gsub("^[^(]+\(|\)"), "", Violations$Location,
+           header=FALSE, col.names = c("lat", "lon"), stringsAsFactors=FALSE)
+read.table(text=gsub("^[^(]+\\(|\\)", "", ViolationsTest$Location),
+           header = FALSE, col.names = c("lat", "lon"), stringsAsFactors=FALSE)
+ViolationsTest =  c("POINT (-7423249 453982)", 
+                    "POINT (-7412345 453321)")
+lat = as.numeric(gsub("POINT\\s*\\((-?\\d+).*", "\\1", ViolationsTest))
+lon = as.numeric(gsub("POINT\\W+\\d+\\s+-?(\\d+).*", "\\1", ViolationsTest))
+lat
+Villations <- Violations
+View(Villations)
+V2k16 %>% separate(V2k16$Location, c("Lat", "Long"), " ")
+
+
+library(stringr)
+str_split_fixed(before$type, "_and_", 2)
+within(V2k16, FOO<-data.frame(do.call('rbind', strsplit(as.character(FOO), '|', fixed=TRUE))))
+
+separate(V2k16, Location, (Lat + Long), sep = " ") 
+separate(V2k16,Location, c('Lat', 'Long'), sep = " ")
+separate(V2k16, Location, c('Lat', 'Long'))
+VVV <- strsplit(V2k16$Location, " ")
+separate(V2k16, Location, c('Lat', 'Long'), sep = " ", remove = TRUE, convert = FALSE, extra = "warn", fill = "warn",)
+V2k16x <- with(V2k16, data.frame(attr = VVV))
+V2k16x <- cbind(V2k16x, data.frame(t(sapply(out, `[`))))
+names(after)[2:3] <- paste("type", 1:2, sep = "_")
+
+
+BD5TRAIN <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD5TRAIN.csv",header = TRUE , sep = ",")
+Near_Retail <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_AllRetail.txt",
+                 header = TRUE)
+Near_Retail <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_AllRetail.txt", header = TRUE)
+Near_CommCorr <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_CommCorr.txt", header = TRUE , sep = ",")
+Near_CrimeInc <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_CrimeInc.txt", header = TRUE , sep = ",")
+Near_HighwyExit <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_HighwyExit.txt", header = TRUE , sep = ",")
+Near_SeptaStops <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_SeptaStops.txt", header = TRUE , sep = ",")
+Near_TrafficData <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_TrafficData.txt", header = TRUE , sep = ",")
+Near_Vacant <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_Vacant.txt", header = TRUE , sep = ",")
+Near_Violations <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_Violations.txt", header = TRUE , sep = ",")
+View (Near_HighwyExit)
+View (Near_SeptaStops)
+View (Near_TrafficData)
+View (Near_Vacant)
+View (Near_Violations)
+View(Near_Retail)
+View(CommCorr)
+
+View(PropertyR)
+PropertyR <- read.table("C:/Users/Keisan/Documents/CPLN590/PropertyR.csv", header = TRUE , sep = ",")
+Near_Vacant <- Near_Vacant[,-1,]
+head(Near_Vacant)
+Near_Vacant > subset(Near_Vacant, select=-c(OBJECTID))
+BigData1 = merge(Near_Violations, Near_Vacant, by.x=("OBJECTID"),  by.y= c("IN_FID", all = TRUE)) 
+head(BigData1)
+merged.BIGDATA1.all <- merge(Near_Violations, Near_Vacant, by.x=("OBJECTID"), by.y=c("IN_FID"), all=TRUE)
+# edits titles of columns for clarity as dataframe gets bigger
+
+colnames(Near_Vacant) <- paste(colnames(Near_Vacant), "Vac", sep = ".")
+colnames(Near_Violations) <- paste(colnames(Near_Violations), "LIViol", sep = ".")
+colnames(Near_Retail) <- paste(colnames(Near_Retail), "Retail", sep = ".")
+colnames(Near_SeptaStops) <- paste(colnames(Near_SeptaStops), "SeptST", sep = ".")
+colnames(Near_TrafficData) <- paste(colnames(Near_TrafficData), "TrafDat", sep = ".")
+colnames(Near_HighwyExit) <- paste(colnames(Near_HighwyExit), "HwyEx", sep = ".")
+colnames(Near_CommCorr) <- paste(colnames(Near_CommCorr), "ComCor", sep = ".")
+#print names to check
+colnames(Near_Vacant)
+colnames(Near_Violations)
+colnames(Near_Retail)
+colnames(Near_SeptaStops)
+colnames(Near_TrafficData)
+colnames(Near_HighwyExit)
+colnames(Near_CommCorr)
+
+#substitute in case you made a mistake
+names(Near_Vacant) <- gsub("_Vac","",names(Near_Vacant)) 
+head(Near_Vacant)
+head(Near_Violations)
+
+#merge 2 dataframes at a time to make one big dataset and keep all records
+BigData1 <- merge(x = Near_Vacant, y = Near_CommCorr, by.x = "IN_FID.Vac", by.y = "OBJECTID.ComCor", all = TRUE)
+ 
+#Keep replacing the 'y' variable and 'by.y' variable names each time
+BigData1 <- merge(x = BigData1, y = Near_Violations, by.x = "IN_FID.Vac", by.y = "OBJECTID.LIViol", all = TRUE)
+BigData1 <- merge(x = BigData1, y = Near_SeptaStops, by.x = "IN_FID.Vac", by.y = "OBJECTID.SeptST", all = TRUE)
+BigData1 <- merge(x = BigData1, y = Near_HighwyExit, by.x = "IN_FID.Vac", by.y = "IN_FID.HwyEx", all = TRUE)
+
+#check the number of columns after each merge. should grow
+ncol(BigData1)
+colnames(BigData1)
+
+#format BigData1 for only the near_dist fields
+Independent_variables <- BigData1 #reassigns dataset for manipulaiton
+Near_dist_col <- BigData1 %>% select(starts_with("Near_DIST"))
+ncol(Near_dist_col)
+head(Near_dist_col)
+View(Near_dist_col)
+Prop_Ind_Var <- PropertyR %>% select(Zoning,Taxable_Bu,Taxable_La,Depth,Garage_Space,Total_Liva)
+#add a new column to eaach data frame
+Train85spread[,13] <- NA
+Train85spread <- Train85cut
+colnames(Train85spread)[13] <- "FID"
+#gives empty column numbers
+Train85spread$FID <- 1:nrow(Train85spread)
+Near_dist_col$FID.Main2 <- 1:nrow(Near_dist_col)
+
+head(Train85spread)
+#drop column by number
+Neardist_col <- Near_dist_col[,-8]
+BigData2 <- merge(x = Prop_Ind_Var, y = Neardist_col, by.x = "FID.Main", by.y = "FID.Main3", all = TRUE)
+
+#add dependent variable to dataframe
+DepVar <- PropertyR %>% select(Sale_Pri_1,Field1,Sale_Price,Sale_Year,Lat1,Long1)
+DepVar <- PropertyR %>% select(Sale_Pri_1,Field1,Sale_Price,Sale_Year,Lat1,Long1)
+
+#output this as a csv for backup
+
+write.csv(BD5TRAIN, file = "C:/Users/Keisan/Documents/CPLN590/bd5TRAIN_RESULTS.csv", append = FALSE, quote = TRUE, sep = ",",
+            eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+            col.names = TRUE, qmethod = c("escape", "double"),
+            fileEncoding = "")
+
+######################################################################################
+#----------------------------------------Creating Training Dataset-------------------------
+
+#in case you need to reimport BigData3- 
+> BigData3 <- read.csv2("C:/Users/Keisan/Documents/CPLN590/BigData3.csv", header = TRUE)
+#make a copy of course ;)
+BD3 <- BigData3
+
+#This dataset has the dependent variable and "most of the independent variables"
+TrainingSet1 <- BigData3
+BigData3 [,1]
+colnames(BigData1 [,1])
+#gives column number with name
+which( colnames(BigData3)=="random_name" )
+#gives column name with number
+colnames( BigData3 )[1]
+colnames(QTrain175)
+TraingingSet1 <- BigData3[,-1] #removes one column from dataframe
+QTrain175 <- QTrain175[,-1] #removes column by number
+TrainingSet1 <- TrainingSet1[, -c(2:4)] #deletes a series of columns
+
+TrainingSet1 <- TrainingSet1[,-1]
+BD5TRAIN[,-1]
+View(TrainingSet1)
+colnames(TrainingSet1)
+
+training3 <- training[, c(2, 12,10)] # include three other columns
+############################################################
+#----------------------------------Summary Stats on Dataset--------------------------
+
+stargazer(TrainingSet1, type ="text", title = "Summary Statistics")
+stargazer(both, type = "html")
+#####################################################################
+#Now were going to create a correlation matrix using the corrplot package
+TrainingSet1Cpy <- TrainingSet1
+
+TrainingSet1Cpy[is.na(TrainingSet1Cpy)] <- 0
+cor(TrainingSet1Cpy, use="pairwise.complete.obs")
+TS1C <- cor(TrainingSet1Cpy)
+M[is.na(M)] <- 0
+TH
+
+head(trainprop3)
+TP <- cor(trainprop3)
+#returns correlation for each variable to all the others. Here is a pretty correlation matrix plot.
+#check the help for corrplot. There are a bunch of different methods for creating these graphics
+corrplot(TH, method = "number")
+
+####################################
+#----------------------------Quick Training Dataset---------------------
+#You just downsized the Dataset so that every value matches up. should've done thisi before.
+#nevertheless you now have a lot less data to work with so time to re-import the dataset and 
+#re do the training|testing partition
+
+Quick_Train <- read.csv2("C:/Users/Keisan/Documents/CPLN590/Quick_Train.csv", header= TRUE)
+cutoff = round(0.7*nrow(Quick_Train666))
+Train666 <- Quick_Train666
+
+Train666_70cut <- Train666[1:cutoff,]
+Test666_30cut <- Train666[-(1:cutoff),]
+
+View(Train666_70cut)
+View(Test666_30cut)
+
+# Need to make your dataframes numeric
+QuickT_Set <- Quick_train_set  #make a copy for safety
+colnames(QuickT_Set)  #trying to figure out which columns are not numeric
+
+is.numeric(QuickT_Set$Zoning) #f
+is.numeric(QuickT_Set$Taxable_La)#f
+is.numeric(QuickT_Set$Depth) #f
+is.numeric(QuickT_Set$Garage_Spa) #t
+is.numeric(QuickT_Set$Total_Liva) #T
+is.numeric(QuickT_Set$NEAR_DIST.Vac) #T
+is.numeric(QuickT_Set$NEAR_DIST.ComCor) #t
+is.numeric(QuickT_Set$NEAR_DIST.SeptaST) #F
+is.numeric(QuickT_Set$NEAR_DIST.TrafDat) #T
+is.numeric(QuickT_Set$NEAR_DIST.HwyEx) #T
+is.numeric(QuickT_Set$Sale_Pri_1) #T
+
+
+transform(TrainingSet2, NEAR_DIST.SeptaST = as.numeric(NEAR_DIST.SeptaST))
+#Remove all $ in these columns "Taxable_Bu" & "Taxable_La"
+gsub("$", "", QTrain175$Depth)
+head(BD3$Taxable_La)
+
+#what mode
+mode(TrainingSet2$NEAR_DIST.SeptaST)
+#####
+
+# The droids you are looking for   aka. the variables you wanna do regression on
+#"Depth"             "Garage_Spa"        "Total_Liva"        "NEAR_DIST.Vac"    
+#[5] "NEAR_DIST.ComCor"  "NEAR_DIST.LIViol"  "NEAR_DIST.Retail"  "NEAR_DIST.SeptST" 
+#[9] "NEAR_DIST.TrafDat" "NEAR_DIST.HwyEx"   "Sale_Pri_1"        "Tax_Build"        
+#[13] "Tax_Land"
+
+
+#But one better! - Output this as backup just incase. 
+write.csv(Quick_Train, file = "C:/Users/Keisan/Documents/CPLN590/Quick_Train.csv", append = FALSE, quote = TRUE, sep = ",",
+          eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+          col.names = TRUE, qmethod = c("escape", "double"),
+          fileEncoding = "")
+write.csv(Quick_Test, file = "C:/Users/Keisan/Documents/CPLN590/Quick_Test.csv", append = FALSE, quote = TRUE, sep = ",",
+          eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+          col.names = TRUE, qmethod = c("escape", "double"),
+          fileEncoding = "")
+stargazer(QTrain70, type="text", title = "Summary Statistics")
+View(QTrain70)
+str(QTrain70)
+head(QTrain70)
+#Assign factors as integers
+Train85cut$NEAR_DIST.Retail <- as.integer(as.character(Train85cut$NEAR_DIST.Retail))
+#Do it for all factoral columns 
+Train85cut$NEAR_DIST.ComCor <- as.integer(as.character(Train85cut$NEAR_DIST.ComCor))
+Train85cut$NEAR_DIST.SeptST <- as.integer(as.character(Train85cut$NEAR_DIST.SeptST))
+Train85cut$NEAR_DIST.Vac <- as.integer(as.character(Train85cut$NEAR_DIST.Vac))
+Train85cut$NEAR_DIST.LIViol <- as.integer(as.character(Train85cut$NEAR_DIST.LIViol))
+Train85cut$NEAR_DIST.TrafDat <- as.integer(as.character(Train85cut$NEAR_DIST.TrafDat))
+Train85cut$NEAR_DIST.HwyEx <- as.integer(as.character(Train85cut$NEAR_DIST.HwyEx))
+#format summary statistics output
+stargazer(OLS_1, type="text", title = "Summary Statistics")  #basic
+stargazer(OLS_1, type = "text", nobs = FALSE, mean.sd = TRUE, median = TRUE,
+          +           iqr = TRUE)   #more information in charts
+
+stargazer(QTrain70, type = "text", style = "qje") #style difference 
+
+
+stargazer(OLS_1, type = "text", 
+          title            = "Summary Statistics",
+          covariate.labels = c("Garage Space Dimension", "Total Livable Space", "Dist.to Vacancy",
+                               "Nearest Commercial Corridor", "Nearest LI Violation", "Nearest Retail", 
+                               "Nearest Septa Stop", "Nearby Traffic Density", "Nearest Highway Exit", "Sale Price", "Building Tax","Land Tax"),
+          dep.var.caption  = "Dependent Variable",
+          dep.var.labels   = "Sale Price")  #rename independent labels
+
+stargazer(QTrain70, type = "text", 
+          dep.var.labels.include = FALSE,
+          model.numbers          = FALSE) #not interested in this
+
+##########################################################################
+#running a OLS Regression on the dataset 
+colnames(QTrain70)notepad
+##########################################   Runs a regression ###############################!!!!!!!!!!!!!!!!!!
+OLS_1  <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST.Vac + NEAR_DIST.ComCor + NEAR_DIST.LIViol + NEAR_DIST.Retail + NEAR_DIST.SeptST + NEAR_DIST.TrafDat + NEAR_DIST.HwyEx + Tax_Build + Tax_Land, data = Train85cut)
+### make dataset smaller
+
+cutoff = round(0.7*nrow(BD5))
+QTrain175 <- QTrain35
+
+BD5TRAIN <- BD5[1:cutoff,]
+BD5TEST <- BD5[-(1:cutoff),]
+dim(BD5TRAIN)
+
+
+#regression ran after you subsetted the data twice. Hooray! you have some data to plot visualizations
+#based on! this is the main point.
+#Now just output that file for safety reasons...
+write.csv(BD5TRAIN, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD5TRAIN.csv", append = FALSE, quote = TRUE, sep = ",",
+          eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+          col.names = TRUE, qmethod = c("escape", "double"),
+          fileEncoding = "")  #cant cuz itsaves as a character not a data.frame and cannot be 
+#coerced into a data.frame
+
+View(OLS_1) #can't view it saves as a function
+#summary  of OLS_1
+
+summary(OLS_1)
+
+
+library(corrplot)
+cor(Train85cut) #produces correlation coefficients in list 
+TR85cut <- cor(Train85cut)
+#Now to visualize
+corrplot.mixed(TR85cut, order ="AOE",method ="color",addCoef.col="grey") #not working :(
+#if column has null values in them
+QMat[is.na(Qmat)] <- 0
+#pairwise obs
+QTMat <- QtestMatrix
+cor(QtestMatrix, use="pairwise.complete.obs")
+corrplot(BD5TRAIN, method = "number")
+
+
+#subsetted data with. Now to go through previous steps with reformatting and subsetting
+Quick_Train666 <- na.omit(Quick_Train)
+Train666 <- Quick_Train666
+
+Train666_70cut <- Train666[1:cutoff,]
+is.numeric(Train85cut$NEAR_DIST.LIViol) 
+
+
+#rmse, rse, etc for training set
+
+#now the mean residual or error from the regression 'reg' aka the 'mean absolute error' aka the MAE
+mean(abs(Train85cut$Sale_Pri_1))
+
+#calculate the MAPE - or mean absolute percent error aka MAPE
+mean(abs(Train85cut$Sale_Pri_1))
+
+
+
+#plot variation in regression output
+
+x <- rnorm(1000)
+y <- rnorm(1000)
+bin<-hexbin(x, y, xbins=50) 
+plot(bin, main="Hexagonal Binning")
+
+hexbin(Train85cut)
+
+#stylize the corrplot: 
+col1 <- colorRampPalette(c("#7F0000","red","#FF7F00","yellow","white", 
+"cyan", "#007FFF", "blue","#00007F"))
+col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
+                           "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061"))  
+col3 <- colorRampPalette(c("red", "white", "blue")) 
+col4 <- colorRampPalette(c("#7F0000","red","#FF7F00","yellow","#7FFF7F", 
+                           "cyan", "#007FFF", "blue","#00007F"))   
+wb <- c("white","black")
+
+
+corrplot(Train85cut, method="square", order = "FPC", cl.pos="n") #corrplot of Train85cut OLS output, using squares, First Class Principle, no color ramp legend,
+head(Train85cut)
+
+
+#this works for corrplot 
+corrplot(cor(Train85cut), method="square", order = "FPC", cl.pos="n", p.mat = res1[[1]], sig.level = 0.02, insig = c("p-value"))
+
+pAdj <- p.adjust(c(res1[[1]]), method = "BH")
+
+
+###select specific columns and drop them 
+Train85cut2> subset(Train85cut, select=-c(Train85cut,Near_DIST.TrafDat))
+
+R> subset(df, select=-c(z,u))
+############## CORRELATION OUTPUT with significance levels indicated by an "X"
+
+cor.mtest <- function(mat, conf.level = 0.95){
+  mat <- as.matrix(mat)
+  n <- ncol(mat)
+  p.mat <- lowCI.mat <- uppCI.mat <- matrix(NA, n, n)
+  diag(p.mat) <- 0
+  diag(lowCI.mat) <- diag(uppCI.mat) <- 1
+  for(i in 1:(n-1)){
+    for(j in (i+1):n){
+      tmp <- cor.test(mat[,i], mat[,j], conf.level = conf.level)
+      p.mat[i,j] <- p.mat[j,i] <- tmp$p.value
+      lowCI.mat[i,j] <- lowCI.mat[j,i] <- tmp$conf.int[1]
+      uppCI.mat[i,j] <- uppCI.mat[j,i] <- tmp$conf.int[2]
+    }
+  }
+  return(list(p.mat, lowCI.mat, uppCI.mat))
+}
+
+res1 <- cor.mtest(mtcars,0.95)
+res2 <- cor.mtest(mtcars,0.99)
+## specialized the insignificant value according to the significant level
+corrplot(M, p.mat = res1[[1]], sig.level=0.2)
+
+
+
+######################## RMSE
+summary(Train85cut)
+lm(formula = Sale_Pri_1 ~ Garage_Spa + NEAR_DIST.LIViol + NEAR_DIST.Retail, data = Train85cut)
+CV <- CVlm(data=trainhouse5, CVT, m=8)
+exists("fit")
+
+#m=5 sets it to 5 folds
+mse <- attr(CVT, "ms")
+rmse <- sqrt(mse)    #Obtaining RMSE for model 1
+rmse
+#Now were going to see how generalizable some of these ind. variables are across both Starbucks and Dunkin Donuts.
+#The following lines of code do the same thing as above to create the 'training2' data frame but this time using
+#only Starbucks and Dunkin Donuts locations.
+#Create a new data frame of just starbucks and DD locations
+StarbucksOrDunkin <- biz[ which(biz$CONAME == "DUNKIN' DONUTS" | biz$CONAME == "STARBUCKS" ), ]
+#create a dummy variablefor DD
+StarbucksOrDunkin$isDunkin = ifelse(StarbucksOrDunkin$CONAME == "DUNKIN' DONUTS" ,1,0)
+#create a new data frame of just the important variables.
+SD2 <- StarbucksOrDunkin[,22:40] #create a new data frame of most of the ind. variables
+SD2 <- SD2[,-5] #removes one column from that
+SD3 <- StarbucksOrDunkin[, c(12,10)] # install.packages("tidyr")
+install.packages("corrplot")
+install.packages("reshape2")
+install.packages("caret")
+install.packages("AppliedPredictiveModeling")
+install.packages("stargazer")
+install.packages("dplyr")
+install.packages("stringr")
+install.packages("lazyeval")
+install.packages("hexbin")
 install.packages("ggplot2")
 
 
@@ -104,7 +578,7 @@ names(after)[2:3] <- paste("type", 1:2, sep = "_")
 
 BD3 <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD3.csv",header = TRUE , sep = ",")
 Near_Retail <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_AllRetail.txt",
-                 header = TRUE)
+                          header = TRUE)
 Near_Retail <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_AllRetail.txt", header = TRUE)
 Near_CommCorr <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_CommCorr.txt", header = TRUE , sep = ",")
 Near_CrimeInc <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_CrimeInc.txt", header = TRUE , sep = ",")
@@ -154,7 +628,7 @@ head(Near_Violations)
 
 #merge 2 dataframes at a time to make one big dataset and keep all records
 BigData1 <- merge(x = Near_Vacant, y = Near_CommCorr, by.x = "IN_FID.Vac", by.y = "OBJECTID.ComCor", all = TRUE)
- 
+
 #Keep replacing the 'y' variable and 'by.y' variable names each time
 BigData1 <- merge(x = BigData1, y = Near_Violations, by.x = "IN_FID.Vac", by.y = "OBJECTID.LIViol", all = TRUE)
 BigData1 <- merge(x = BigData1, y = Near_SeptaStops, by.x = "IN_FID.Vac", by.y = "OBJECTID.SeptST", all = TRUE)
@@ -191,9 +665,9 @@ DepVar <- PropertyR %>% select(Sale_Pri_1,Field1,Sale_Price,Sale_Year,Lat1,Long1
 #output this as a csv for backup
 
 write.csv(BigData3, file = "C:/Users/Keisan/Documents/CPLN590/BigData3.csv", append = FALSE, quote = TRUE, sep = ",",
-            eol = "\n", na = "NA", dec = ".", row.names = TRUE,
-            col.names = TRUE, qmethod = c("escape", "double"),
-            fileEncoding = "")
+          eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+          col.names = TRUE, qmethod = c("escape", "double"),
+          fileEncoding = "")
 
 ######################################################################################
 #----------------------------------------Creating Training Dataset-------------------------
@@ -234,9 +708,9 @@ stargazer(both, type = "html")
 #Now were going to create a correlation matrix using the corrplot package
 TrainingSet1Cpy <- TrainingSet1
 
-TrainingSet1Cpy[is.na(TrainingSet1Cpy)] <- 0
-cor(TrainingSet1Cpy, use="pairwise.complete.obs")
-TS1C <- cor(TrainingSet1Cpy)
+BD5TRAIN[is.na(BD5TRAIN)] <- 0
+cor(BD5TRAIN, use="pairwise.complete.obs")
+CorBD5train <- cor(BD5TRAIN)
 M[is.na(M)] <- 0
 TH
 na.omit(Quick_Train) #removes na rows.
@@ -244,7 +718,7 @@ head(trainprop3)
 TP <- cor(trainprop3)
 #returns correlation for each variable to all the others. Here is a pretty correlation matrix plot.
 #check the help for corrplot. There are a bunch of different methods for creating these graphics
-corrplot(TH, method = "number")
+corrplot(CorBD5train, method = "square")
 
 ####################################
 #----------------------------Quick Training Dataset---------------------
@@ -262,7 +736,7 @@ Train666 <- Quick_Train666
 #First create a dataframe of the predicted values and the FID which we can join back to the shapefile in ArcGIS
 predForArcGIS <- cbind(trainhouse$X, CVT$fitted.values)
 
-
+summary(BD5ols)
 
 #created test and training sets 
 BD5train <- DupBD5[1:cutoff,]
@@ -270,7 +744,7 @@ BD5Testpool <- DupBD5[-(1:cutoff),]
 
 # Run OLS on Training set
 
-BD5ols  <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST_Vac + NEAR_DIST_ComCor + NEAR_DIST_LIViol + NEAR_DIST_Retail + NEAR_DIST_SeptST + NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + Tax_Build + Tax_Land, data = BD5train)
+BD5Trainols  <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST_Vac + NEAR_DIST_ComCor + NEAR_DIST_LIViol + NEAR_DIST_Retail + NEAR_DIST_SeptST + NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + Tax_Build + Tax_Land, data = BD5TRAIN, na.action=na.omit)
 
 ##################################RMSE & MAE for residuals in BD5ols  #############################
 
@@ -391,6 +865,9 @@ colnames(QTrain70)notepad
 ##########################################   Runs a regression ###############################!!!!!!!!!!!!!!!!!!
 OLS_1  <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST.Vac + NEAR_DIST.ComCor + NEAR_DIST.LIViol + NEAR_DIST.Retail + NEAR_DIST.SeptST + NEAR_DIST.TrafDat + NEAR_DIST.HwyEx + Tax_Build + Tax_Land, data = Train85cut)
 ### make dataset smaller
+#####  tHIS IS LIFE ######################
+BD5ols  <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST_Vac + NEAR_DIST_ComCor + NEAR_DIST_LIViol + NEAR_DIST_Retail + NEAR_DIST_SeptST + NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + Tax_Build + Tax_Land, data = BD5TRAIN)
+
 
 cutoff = round(0.5*nrow(Train175cut))
 QTrain175 <- QTrain35
@@ -404,9 +881,9 @@ dim(Train85cut)
 #Now just output that file for safety reasons...
 write.csv
 (OLS_1, file = "C:/Users/Keisan/Documents/CPLN590/OLS_1.csv", append = FALSE, quote = TRUE, sep = ",",
-          eol = "\n", na = "NA", dec = ".", row.names = TRUE,
-          col.names = TRUE, qmethod = c("escape", "double"),
-          fileEncoding = "")  #cant cuz itsaves as a character not a data.frame and cannot be 
+  eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+  col.names = TRUE, qmethod = c("escape", "double"),
+  fileEncoding = "")  #cant cuz itsaves as a character not a data.frame and cannot be 
 #coerced into a data.frame
 
 View(OLS_1) #can't view it saves as a function
@@ -459,7 +936,7 @@ hexbin(Train85cut)
 
 #stylize the corrplot: 
 col1 <- colorRampPalette(c("#7F0000","red","#FF7F00","yellow","white", 
-"cyan", "#007FFF", "blue","#00007F"))
+                           "cyan", "#007FFF", "blue","#00007F"))
 col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
                            "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061"))  
 col3 <- colorRampPalette(c("red", "white", "blue")) 
@@ -543,7 +1020,7 @@ PART 4 - Cross validation time.-------------------------------------------------
   
   #Perform 10-fold cross validation
   #begin by specifying the type of resampling (cross validation)
-View(QTrain175)
+  View(QTrain175)
 CrossVal1 <- trainControl(method = "cv", number = 10)
 str(QTrain175)
 #run the cross validation - note that here with the use of the '.' we are using all the variables in that dataframe
@@ -554,13 +1031,13 @@ linmodfit <- train(Sale_Pri_1 ~ ., data=QTrain175, method = "lm", trControl=fitC
 #removes a whole column :/  >   Qtr1 <- Qtr1[, colSums(is.na(Qtr1)) == 0]
 #This is the Cross validation test code
 library(caret); df1 <- matrix(rnorm(100),ncol=5); colnames(df1) <- c(paste("V",1:5,sep=""), "Sale_Pri_1"); linmodfit <- train(Sale_Pri_1 ~ ., data=df1, method = "lm")
-                
-                #why did you get this warning?
-                summary(linmodfit)
-                trainhouse5 <- trainhouse5[,-14] #removes one column from that data frame
-                
-                #now run it again.
-                
+
+#why did you get this warning?
+summary(linmodfit)
+trainhouse5 <- trainhouse5[,-14] #removes one column from that data frame
+
+#now run it again.
+
 ### Trying CV Again#######################
 
 #Randomly shuffle the data
@@ -583,10 +1060,10 @@ for(i in 1:10){
 predict(OLS_1) #worked
 #also worked- 
 predicted <- predict(OLS_1, QTrain175, se.fit = FALSE, scale = NULL, df = Inf,
-        interval = c("none", "confidence", "prediction"),
-        level = 0.95, type = c("response", "terms"),
-        terms = NULL, na.action = na.pass,
-        pred.var = res.var/weights, weights = 1)
+                     interval = c("none", "confidence", "prediction"),
+                     level = 0.95, type = c("response", "terms"),
+                     terms = NULL, na.action = na.pass,
+                     pred.var = res.var/weights, weights = 1)
 
 # Function that returns Root Mean Squared Error
 rmse <- function(error)
@@ -651,7 +1128,7 @@ OLS_1.lm = lm(eruptions ~ waiting, data=faithful)
 OLS_2.res = resid(OLS_1)
 plot(QTrain175$Sale_Pri_1, OLS_2.res, 
      +     ylab="Residuals", xlab="Observations")
- abline(0, 0)                  # the horizon
+abline(0, 0)                  # the horizon
 ## cross validation method###################################
 #Randomly shuffle the data
 yourData<-yourData[sample(nrow(yourData)),]
@@ -677,47 +1154,91 @@ model <- train(Sale_Pri_1~., data=QTrain175, trControl=train_control, method="nb
 # summarize results
 print(df1)
 library(caret); df1 <- matrix(rnorm(100, ncol=10); colnames(df1) <- c(paste("V", 1:10,12, sep=""), "Sale_Pri_1"); linmodfit <- train(Sale_Pri_1 ~ .,data=df1,method = "lm")
-#output file to csv-   
-write.csv(QTrain175, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/QTrain175.csv")
-write.csv(QTrain175, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/QTrain175.csv")
-install.packages("broom")
-library(broom)
-#Call
-OLS_1
+                              #output file to csv-   
+                              write.csv(QTrain175, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/QTrain175.csv")
+                              write.csv(QTrain175, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/QTrain175.csv")
+                              install.packages("broom")
+                              library(broom)
+                              #Call
+                              OLS_1
+                              
+                              tidy_OLS_1 <- tidy(OLS_1)
+                              tidy_OLS_1
+                              
+                              write.csv2(as.data.frame(summary(OLS_1)), file="OLS_1.csv")
+                              
+                              
+                              
+                              #------------------------------------------------------------------------------------------------------------------
+                              #  PART 5 - Out of sample prediction 2 - Starbucks------------------------------------------------------------------
+                              
+                              #Recall that reg is the regression on just the FULL SET of training data. 
+                              #Now were going to use that to predict for the 17 candidate starbucks locations
+                              #Then of course, because we actually have the SALES_VOL figures for those starbucks, we will calculate some
+                              #error
+                              
+                              #subject these predictions on to the testing data frame w/ the 17 candidate locations
+                              regPredStarbucks <- predict(reg, testing)
+                              #now create a new data frame where one column is the dependent variable 'SALES_VOL' from testing 
+                              #(Which is column 10)
+                              regPredStarbucksValues <- data.frame(obs = testing[,10], pred = regPredStarbucks)
+                              head(regPredStarbucksValues)
+                              #Finally regress these predicted values from reg2 on to the SALES_VOL from the random2Test data frame
+                              defaultSummary(regPredStarbucksValues)
+                              #calculate the difference and percent change between observed and predicted
+                              regPredStarbucksValues$diff <- regPredStarbucksValues$obs - regPredStarbucksValues$pred
+                              regPredStarbucksValues$diffP <- (regPredStarbucksValues$obs - regPredStarbucksValues$pred) / regPredStarbucksValues$obs
+                              #now the mean residual or error from the regression 'reg' aka the 'mean absolute error' aka the MAE
+                              mean(abs(regPredStarbucksValues$diff))
+                              #calculate the MAPE - or mean absolute percent error aka MAPE
+                              mean(abs(regPredStarbucksValues$diffP))
+                              #update this data frame to include the FID field
+                              regPredStarbucksValues <- cbind(testing$FID, regPredStarbucksValues)
+                              #change columns names and output for arcgis
+                              colnames(regPredStarbucksValues) <- c("FID", "observed", "predicted", "diff", "diffPct")
+                              write.csv(regPredStarbucksValues, file = "C:/Users/kennethsteif/regPredStarbucksValues.csv")
+                              include to other columns
+SD4 <- cbind(SD2, SD3) #merge together the pertiant variables
+Garage_Spa Total_Liva NEAR_DIST.Vac NEAR_DIST.ComCor NEAR_DIST.LIViol NEAR_DIST.Retail NEAR_DIST.SeptST NEAR_DIST.TrafDat NEAR_DIST.HwyEx Sale_Pri_1 Tax_Build Tax_Land
 
-tidy_OLS_1 <- tidy(OLS_1)
-tidy_OLS_1
+#creates a dataset of just these columns 
 
-write.csv2(as.data.frame(summary(OLS_1)), file="OLS_1.csv")
-
+BD5 <- BD4[ , c("Zoning","Taxable_Bu", "Taxable_La", "Sale_Price", "Sale_Year")]
 
 
-#------------------------------------------------------------------------------------------------------------------
-#  PART 5 - Out of sample prediction 2 - Starbucks------------------------------------------------------------------
-                
-#Recall that reg is the regression on just the FULL SET of training data. 
-#Now were going to use that to predict for the 17 candidate starbucks locations
-#Then of course, because we actually have the SALES_VOL figures for those starbucks, we will calculate some
-#error
-                
-#subject these predictions on to the testing data frame w/ the 17 candidate locations
-regPredStarbucks <- predict(reg, testing)
-#now create a new data frame where one column is the dependent variable 'SALES_VOL' from testing 
-#(Which is column 10)
-regPredStarbucksValues <- data.frame(obs = testing[,10], pred = regPredStarbucks)
-head(regPredStarbucksValues)
-#Finally regress these predicted values from reg2 on to the SALES_VOL from the random2Test data frame
-defaultSummary(regPredStarbucksValues)
-#calculate the difference and percent change between observed and predicted
-regPredStarbucksValues$diff <- regPredStarbucksValues$obs - regPredStarbucksValues$pred
-regPredStarbucksValues$diffP <- (regPredStarbucksValues$obs - regPredStarbucksValues$pred) / regPredStarbucksValues$obs
-#now the mean residual or error from the regression 'reg' aka the 'mean absolute error' aka the MAE
-mean(abs(regPredStarbucksValues$diff))
-#calculate the MAPE - or mean absolute percent error aka MAPE
-mean(abs(regPredStarbucksValues$diffP))
-#update this data frame to include the FID field
-regPredStarbucksValues <- cbind(testing$FID, regPredStarbucksValues)
-#change columns names and output for arcgis
-colnames(regPredStarbucksValues) <- c("FID", "observed", "predicted", "diff", "diffPct")
-write.csv(regPredStarbucksValues, file = "C:/Users/kennethsteif/regPredStarbucksValues.csv")
-                
+BD4[ , -which(names(BD4) %in% c("Zoning","Taxable_Bu", "Taxable_La", "Sale_Price", "Sale_Year"))]
+FID_Main"          "Zoning"            "Taxable_Bu"        "Taxable_La"        "Depth"             "Garage_Spa"       
+ [7] "Total_Liva"        "NEAR_DIST_Vac"     "NEAR_DIST_ComCor"  "NEAR_DIST_LIViol"  "NEAR_DIST_Retail"  "NEAR_DIST_SeptST" 
+[13] "NEAR_DIST_TrafDat" "NEAR_DIST_HwyEx"   "Sale_Pri_1"        "Sale_Price"        "Sale_Year"         "Tax_Build"        
+[19] "Tax_Land"          "Lat1"              "Long1"
+
+
+
+BD5Trainols_1 <- lm(formula = Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST.Vac + 
+    NEAR_DIST_ComCor + NEAR_DIST_LIViol + NEAR_DIST_Retail + 
+NEAR_DIST_SeptST + NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + 
+BD5TRAIN, na.action=na.omit)  
+
+
+BD5Trainols_1 <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST.Vac + 
+    NEAR_DIST_ComCor + NEAR_DIST_LIViol + NEAR_DIST_Retail + 
+    NEAR_DIST_SeptST + NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + 
+BD5TRAIN, na.action=na.omit)
+
+head(BD5TRAIN)
+
+
+#######################################################################   Super Important!!!    #########
+# these don't match for some reason
+
+> fitO <- lm(Y ~ x, na.action=na.omit)     # fit with na.omit
+dim(resid(BD5Trainols))                     # use extractor function
+summary(BD5Trainols)
+dim(resid(BD5Trainols))
+> fitE <- lm(Y ~ x, na.action=na.exclude)  # fit with na.exclude
+> dim(residuals(fitE))                     # use extractor function -> = N
+
+
+BD5TRAIN$resid <- resid(BD5ols)
+BD5$fitted <- fitted(BD5ols)
+
