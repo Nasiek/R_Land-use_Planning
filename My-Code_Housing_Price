@@ -767,7 +767,7 @@ RMSE <- sqrt(mean((y_hat-predict(BD5ols))^2))
 y_hat <- fitted.values(BD5ols)
 
 #and your em ay eee (MAE)
-
+dim(BD5TRAIN)
 mae(sim,obs)
 
 MAE <- sum(abs(y_hat-predict)) / length(y_hat)
@@ -776,7 +776,7 @@ data(cars)
 reg <- lm(log(dist) ~ log(speed), data = cars)
 MAPE(y_pred = exp(BD5ols$fitted.values), y_true = BD5train$Sale_Pri_1)
 
-mean(abs(BD5train$Sale_Pri_1))
+mean(abs(BD5TRAIN$Sale_Pri_1))
 
 
 
