@@ -8,7 +8,11 @@ install.packages("dplyr")
 install.packages("stringr")
 install.packages("lazyeval")
 install.packages("hexbin")
+install.packages("devtools")
 
+install_github("mrdwabmisc", "mrdwab")
+
+library(devtools)
 library(hexbin)
 library(car)
 library(sunflowerplot)
@@ -21,6 +25,12 @@ library(caret)
 library(AppliedPredictiveModeling)
 library(stargazer)
 library(dplyr)
+
+#how to import a file : 
+library(readr)
+BD5TEST <- read_csv("~/CPLN590/MIDTERM/DATA/BD5TEST.csv")
+View(BD5TEST)  
+
 
 head(BD5TRAIN)
 
@@ -776,6 +786,20 @@ data(cars)
 reg <- lm(log(dist) ~ log(speed), data = cars)
 MAPE(y_pred = exp(BD5ols$fitted.values), y_true = BD5train$Sale_Pri_1)
 
+
+
+#lets take a closer look at the model error.
+#first what is the mean SALES_VOL
+mean(BD5TRAIN$Sale_Pri_1)
+
+
+
+
+#calculate the difference and percent change between observed and predicted
+BD5TRAIN$diff <- regPredStarbucksValues$obs - regPredStarbucksValues$pred
+regPredStarbucksValues$diffP <- (regPredStarbucksValues$obs - regPredStarbucksValues$pred) / regPredStarbucksValues$obs
+
+
 mean(abs(BD5TRAIN$Sale_Pri_1))
 
 
@@ -1242,3 +1266,40 @@ dim(resid(BD5Trainols))
 BD5TRAIN$resid <- resid(BD5ols)
 BD5$fitted <- fitted(BD5ols)
 
+#RMSE   WITH na values
+
+sqrt( sum( (BD5TRAIN$Sale_Pri_1 - BD5TRAIN$predict)^2 , na.rm = TRUE ) / nrow(BD5TRAIN) )
+
+# MEAN WITH na values  
+TSC <- BD5TRAIN$Sale_Pri_1 
+PRF <- BD5TRAIN$predict
+mean(TSC, na.rm = TRUE)
+
+
+#MAE WITH na values
+require(hydroGOF)
+mae(PRF, TSC, na.rm=TRUE,)
+mae(sim, obs, na.rm=TRUE, ...)
+#"mae": mean absolute error, which is calculated as sum(|t_i - p_i|)/N, 
+#where t's are the true values and p's are the predictions, 
+#while N is supposed to be the size of both vectors.
+sum(BD5TRAIN$Sale_Pri_1 - BD5TRAIN$predict, na.rm= TRUE) #/(nrow(BD5TRAIN)*ncol(BD5TRAIN))
+
+#MAPE WITH na values
+#calculate the MAPE - or mean absolute percent error aka MAPE
+mean(abs(BD5TRAIN$DP),na.rm = TRUE)   ### WORKS WELL.
+
+#choose a single house 
+
+SINGLE <- BD5TRAIN[sample(nrow(BD5TRAIN), 1), ]
+view(single)
+head(SINGLE)
+
+#choose random sample 
+dim(BD6)
+SINGLE <- BD6[sample(nrow(BD6), 1), ]
+head(SINGLE)
+
+install.packages("devtools")
+library(devtools)
+install_github("mrdwabmisc", "mrdwab")
