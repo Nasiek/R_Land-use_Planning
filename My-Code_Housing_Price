@@ -28,8 +28,8 @@ library(dplyr)
 
 #how to import a file : 
 library(readr)
-BD5TEST <- read_csv("~/CPLN590/MIDTERM/DATA/BD5TEST.csv")
-View(BD5TEST)  
+BD6_Neighb_Jo <- read_csv("~/CPLN590/MIDTERM/DATA/BD6_Neighb_Jo.csv")
+View(BD6_Neighb_Jo)  
 
 
 head(BD5TRAIN)
@@ -47,7 +47,7 @@ Violations <- read.csv("C:/Users/Keisan/Downloads/LI_Violations2016.csv", header
 stringsAsFactors= TRUE,
 stringsAsFactors= TRUE,
 strip.white = TRUE)
-Property <- read.table("C:/Users/Keisan/DOcuments/CPLN590/MIDTERM/DATA/Propertyfile.csv", header = TRUE, fill = TRUE)
+BD6_Neighb_Jo <- read.table("C:/Users/Keisan/DOcuments/CPLN590/MIDTERM/DATA/BD6_Neighb_Jo.csv", header = TRUE, fill = TRUE)
 separate(Violations, Location, c("Lat11", "Long11"), sep = " ")
 Violationstest2 <- gsub("POINT ", "", Violations$Location)
 vlocsplit= gsub("POINT", "", Location)
@@ -109,9 +109,9 @@ V2k16x <- cbind(V2k16x, data.frame(t(sapply(out, `[`))))
 names(after)[2:3] <- paste("type", 1:2, sep = "_")
 
 
-BD5TRAIN <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD5TRAIN.csv",header = TRUE , sep = ",")
+BD6_Neighb_Jo <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD6_Neighb_Jo.csv",header = TRUE , sep = ",")
 Near_Retail <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_AllRetail.txt",
-                 header = TRUE)
+                          header = TRUE)
 Near_Retail <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_AllRetail.txt", header = TRUE)
 Near_CommCorr <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_CommCorr.txt", header = TRUE , sep = ",")
 Near_CrimeInc <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_CrimeInc.txt", header = TRUE , sep = ",")
@@ -161,7 +161,7 @@ head(Near_Violations)
 
 #merge 2 dataframes at a time to make one big dataset and keep all records
 BigData1 <- merge(x = Near_Vacant, y = Near_CommCorr, by.x = "IN_FID.Vac", by.y = "OBJECTID.ComCor", all = TRUE)
- 
+
 #Keep replacing the 'y' variable and 'by.y' variable names each time
 BigData1 <- merge(x = BigData1, y = Near_Violations, by.x = "IN_FID.Vac", by.y = "OBJECTID.LIViol", all = TRUE)
 BigData1 <- merge(x = BigData1, y = Near_SeptaStops, by.x = "IN_FID.Vac", by.y = "OBJECTID.SeptST", all = TRUE)
@@ -188,7 +188,7 @@ Near_dist_col$FID.Main2 <- 1:nrow(Near_dist_col)
 
 head(Train85spread)
 #drop column by number
-Neardist_col <- Near_dist_col[,-8]
+BD6_Neighb_Jo <- BD6_Neighb_Jo[,-25]
 BigData2 <- merge(x = Prop_Ind_Var, y = Neardist_col, by.x = "FID.Main", by.y = "FID.Main3", all = TRUE)
 
 #add dependent variable to dataframe
@@ -198,15 +198,15 @@ DepVar <- PropertyR %>% select(Sale_Pri_1,Field1,Sale_Price,Sale_Year,Lat1,Long1
 #output this as a csv for backup
 
 write.csv(BD5TRAIN, file = "C:/Users/Keisan/Documents/CPLN590/bd5TRAIN_RESULTS.csv", append = FALSE, quote = TRUE, sep = ",",
-            eol = "\n", na = "NA", dec = ".", row.names = TRUE,
-            col.names = TRUE, qmethod = c("escape", "double"),
-            fileEncoding = "")
+          eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+          col.names = TRUE, qmethod = c("escape", "double"),
+          fileEncoding = "")
 
 ######################################################################################
 #----------------------------------------Creating Training Dataset-------------------------
 
 #in case you need to reimport BigData3- 
-> BigData3 <- read.csv2("C:/Users/Keisan/Documents/CPLN590/BigData3.csv", header = TRUE)
+BD6_Neighb_Jo <- read.csv2("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD6_Neighb_Jo.csv", header = TRUE)
 #make a copy of course ;)
 BD3 <- BigData3
 
@@ -345,7 +345,7 @@ stargazer(QTrain70, type = "text",
 #running a OLS Regression on the dataset 
 colnames(QTrain70)notepad
 ##########################################   Runs a regression ###############################!!!!!!!!!!!!!!!!!!
-OLS_1  <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST.Vac + NEAR_DIST.ComCor + NEAR_DIST.LIViol + NEAR_DIST.Retail + NEAR_DIST.SeptST + NEAR_DIST.TrafDat + NEAR_DIST.HwyEx + Tax_Build + Tax_Land, data = Train85cut)
+N_hood <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST_Vac + NEAR_DIST_ComCor + NEAR_DIST_LIViol + NEAR_DIST_Retail + NEAR_DIST_SeptST + NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + Tax_Build + Tax_Land, data = BD6_Neighb_Jo)
 ### make dataset smaller
 
 cutoff = round(0.7*nrow(BD5))
@@ -413,7 +413,7 @@ hexbin(Train85cut)
 
 #stylize the corrplot: 
 col1 <- colorRampPalette(c("#7F0000","red","#FF7F00","yellow","white", 
-"cyan", "#007FFF", "blue","#00007F"))
+                           "cyan", "#007FFF", "blue","#00007F"))
 col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582", "#FDDBC7",
                            "#FFFFFF", "#D1E5F0", "#92C5DE", "#4393C3", "#2166AC", "#053061"))  
 col3 <- colorRampPalette(c("red", "white", "blue")) 
@@ -754,7 +754,7 @@ BD5Testpool <- DupBD5[-(1:cutoff),]
 
 # Run OLS on Training set
 
-BD5Trainols  <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST_Vac + NEAR_DIST_ComCor + NEAR_DIST_LIViol + NEAR_DIST_Retail + NEAR_DIST_SeptST + NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + Tax_Build + Tax_Land, data = BD5TRAIN, na.action=na.omit)
+Rittenhouse_ols  <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST_Vac + NEAR_DIST_ComCor + NEAR_DIST_LIViol + NEAR_DIST_Retail + NEAR_DIST_SeptST + NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + Tax_Build + Tax_Land, data = Rittenhouse, na.action=na.omit)
 
 ##################################RMSE & MAE for residuals in BD5ols  #############################
 
@@ -892,6 +892,7 @@ OLS_1  <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST.Vac + NEAR_DIST.Co
 #####  tHIS IS LIFE ######################
 BD5ols  <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST_Vac + NEAR_DIST_ComCor + NEAR_DIST_LIViol + NEAR_DIST_Retail + NEAR_DIST_SeptST + NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + Tax_Build + Tax_Land, data = BD5TRAIN)
 
+Rittenhouse_ols  <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST_Vac + NEAR_DIST_ComCor + NEAR_DIST_LIViol + NEAR_DIST_Retail + NEAR_DIST_SeptST + NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + Tax_Build + Tax_Land, data = Rittenhouse)
 
 cutoff = round(0.5*nrow(Train175cut))
 QTrain175 <- QTrain35
@@ -1222,84 +1223,92 @@ library(caret); df1 <- matrix(rnorm(100, ncol=10); colnames(df1) <- c(paste("V",
                               colnames(regPredStarbucksValues) <- c("FID", "observed", "predicted", "diff", "diffPct")
                               write.csv(regPredStarbucksValues, file = "C:/Users/kennethsteif/regPredStarbucksValues.csv")
                               include to other columns
-SD4 <- cbind(SD2, SD3) #merge together the pertiant variables
-Garage_Spa Total_Liva NEAR_DIST.Vac NEAR_DIST.ComCor NEAR_DIST.LIViol NEAR_DIST.Retail NEAR_DIST.SeptST NEAR_DIST.TrafDat NEAR_DIST.HwyEx Sale_Pri_1 Tax_Build Tax_Land
+                              SD4 <- cbind(SD2, SD3) #merge together the pertiant variables
+                              Garage_Spa Total_Liva NEAR_DIST.Vac NEAR_DIST.ComCor NEAR_DIST.LIViol NEAR_DIST.Retail NEAR_DIST.SeptST NEAR_DIST.TrafDat NEAR_DIST.HwyEx Sale_Pri_1 Tax_Build Tax_Land
+                              
+                              #creates a dataset of just these columns 
+                              
+                              BD5 <- BD4[ , c("Zoning","Taxable_Bu", "Taxable_La", "Sale_Price", "Sale_Year")]
+                              
+                              
+                              BD4[ , -which(names(BD4) %in% c("Zoning","Taxable_Bu", "Taxable_La", "Sale_Price", "Sale_Year"))]
+                              FID_Main"          "Zoning"            "Taxable_Bu"        "Taxable_La"        "Depth"             "Garage_Spa"       
+                              [7] "Total_Liva"        "NEAR_DIST_Vac"     "NEAR_DIST_ComCor"  "NEAR_DIST_LIViol"  "NEAR_DIST_Retail"  "NEAR_DIST_SeptST" 
+                              [13] "NEAR_DIST_TrafDat" "NEAR_DIST_HwyEx"   "Sale_Pri_1"        "Sale_Price"        "Sale_Year"         "Tax_Build"        
+                              [19] "Tax_Land"          "Lat1"              "Long1"
+                              
+                              
+                              
+                              BD5Trainols_1 <- lm(formula = Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST.Vac + 
+                              NEAR_DIST_ComCor + NEAR_DIST_LIViol + NEAR_DIST_Retail + 
+                              NEAR_DIST_SeptST + NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + 
+                              BD5TRAIN, na.action=na.omit)  
+                              
+                              
+                              BD5Trainols_1 <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST.Vac + 
+                              NEAR_DIST_ComCor + NEAR_DIST_LIViol + NEAR_DIST_Retail + 
+                              NEAR_DIST_SeptST + NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + 
+                              BD5TRAIN, na.action=na.omit)
+                              
+                              head(BD5TRAIN)
+                              
+                              
+                              #######################################################################   Super Important!!!    #########
+                              # these don't match for some reason
+                              
+                              > fitO <- lm(Y ~ x, na.action=na.omit)     # fit with na.omit
+                              dim(resid(BD5Trainols))                     # use extractor function
+                              summary(BD5Trainols)
+                              dim(resid(BD5Trainols))
+                              > fitE <- lm(Y ~ x, na.action=na.exclude)  # fit with na.exclude
+                              > dim(residuals(fitE))                     # use extractor function -> = N
+                              
+                              
+                              BD5TRAIN$resid <- resid(BD5ols)
+                              BD5$fitted <- fitted(BD5ols)
+                              
+                              #RMSE   WITH na values
+                              
+                              sqrt( sum( (BD5TRAIN$Sale_Pri_1 - BD5TRAIN$predict)^2 , na.rm = TRUE ) / nrow(BD5TRAIN) )
+                              
+                              # MEAN WITH na values  
+                              TSC <- BD5TRAIN$Sale_Pri_1 
+                              PRF <- BD5TRAIN$predict
+                              mean(TSC, na.rm = TRUE)
+                              
+                              
+                              #MAE WITH na values
+                              require(hydroGOF)
+                              mae(PRF, TSC, na.rm=TRUE,)
+                              mae(sim, obs, na.rm=TRUE, ...)
+                              #"mae": mean absolute error, which is calculated as sum(|t_i - p_i|)/N, 
+                              #where t's are the true values and p's are the predictions, 
+                              #while N is supposed to be the size of both vectors.
+                              sum(BD5TRAIN$Sale_Pri_1 - BD5TRAIN$predict, na.rm= TRUE) #/(nrow(BD5TRAIN)*ncol(BD5TRAIN))
+                              
+                              #MAPE WITH na values
+                              #calculate the MAPE - or mean absolute percent error aka MAPE
+                              mean(abs(BD5TRAIN$DP),na.rm = TRUE)   ### WORKS WELL.
+                              
+                              #choose a single house 
+                              
+                              SINGLE <- BD5TRAIN[sample(nrow(BD5TRAIN), 1), ]
+                              view(single)
+                              head(SINGLE)
+                              
+                              #choose random sample 
+                              dim(BD6)
+                              SINGLE <- BD6_Neighb_Jo[sample(nrow(BD6_Neighb_Jo), 1), ]
+                              head(SINGLE)
+                              install.packages("devtools")
+                              library(devtools)
+                              install_github("mrdwabmisc", "mrdwab")
 
-#creates a dataset of just these columns 
+## nto working >  can't find sratified function
+#stratified(BD6_Neighb_Jo, group="NAME", size=., select=list(NAME = "RITTENHOUSE"))
 
-BD5 <- BD4[ , c("Zoning","Taxable_Bu", "Taxable_La", "Sale_Price", "Sale_Year")]
-
-
-BD4[ , -which(names(BD4) %in% c("Zoning","Taxable_Bu", "Taxable_La", "Sale_Price", "Sale_Year"))]
-FID_Main"          "Zoning"            "Taxable_Bu"        "Taxable_La"        "Depth"             "Garage_Spa"       
- [7] "Total_Liva"        "NEAR_DIST_Vac"     "NEAR_DIST_ComCor"  "NEAR_DIST_LIViol"  "NEAR_DIST_Retail"  "NEAR_DIST_SeptST" 
-[13] "NEAR_DIST_TrafDat" "NEAR_DIST_HwyEx"   "Sale_Pri_1"        "Sale_Price"        "Sale_Year"         "Tax_Build"        
-[19] "Tax_Land"          "Lat1"              "Long1"
+Rittenhouse <- BD6_Neighb_Jo[ sample( which(BD6_Neighb_Jo$NAME=='RITTENHOUSE'), round(1.0*length(which(BD6_Neighb_Jo$NAME=='RITTENHOUSE')))), ]
 
 
-
-BD5Trainols_1 <- lm(formula = Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST.Vac + 
-    NEAR_DIST_ComCor + NEAR_DIST_LIViol + NEAR_DIST_Retail + 
-NEAR_DIST_SeptST + NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + 
-BD5TRAIN, na.action=na.omit)  
-
-
-BD5Trainols_1 <- lm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST.Vac + 
-    NEAR_DIST_ComCor + NEAR_DIST_LIViol + NEAR_DIST_Retail + 
-    NEAR_DIST_SeptST + NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + 
-BD5TRAIN, na.action=na.omit)
-
-head(BD5TRAIN)
-
-
-#######################################################################   Super Important!!!    #########
-# these don't match for some reason
-
-> fitO <- lm(Y ~ x, na.action=na.omit)     # fit with na.omit
-dim(resid(BD5Trainols))                     # use extractor function
-summary(BD5Trainols)
-dim(resid(BD5Trainols))
-> fitE <- lm(Y ~ x, na.action=na.exclude)  # fit with na.exclude
-> dim(residuals(fitE))                     # use extractor function -> = N
-
-
-BD5TRAIN$resid <- resid(BD5ols)
-BD5$fitted <- fitted(BD5ols)
-
-#RMSE   WITH na values
-
-sqrt( sum( (BD5TRAIN$Sale_Pri_1 - BD5TRAIN$predict)^2 , na.rm = TRUE ) / nrow(BD5TRAIN) )
-
-# MEAN WITH na values  
-TSC <- BD5TRAIN$Sale_Pri_1 
-PRF <- BD5TRAIN$predict
-mean(TSC, na.rm = TRUE)
-
-
-#MAE WITH na values
-require(hydroGOF)
-mae(PRF, TSC, na.rm=TRUE,)
-mae(sim, obs, na.rm=TRUE, ...)
-#"mae": mean absolute error, which is calculated as sum(|t_i - p_i|)/N, 
-#where t's are the true values and p's are the predictions, 
-#while N is supposed to be the size of both vectors.
-sum(BD5TRAIN$Sale_Pri_1 - BD5TRAIN$predict, na.rm= TRUE) #/(nrow(BD5TRAIN)*ncol(BD5TRAIN))
-
-#MAPE WITH na values
-#calculate the MAPE - or mean absolute percent error aka MAPE
-mean(abs(BD5TRAIN$DP),na.rm = TRUE)   ### WORKS WELL.
-
-#choose a single house 
-
-SINGLE <- BD5TRAIN[sample(nrow(BD5TRAIN), 1), ]
-view(single)
-head(SINGLE)
-
-#choose random sample 
-dim(BD6)
-SINGLE <- BD6[sample(nrow(BD6), 1), ]
-head(SINGLE)
-
-install.packages("devtools")
-library(devtools)
-install_github("mrdwabmisc", "mrdwab")
+#lists unique items in a list
+unique(unlist(BD6_Neighb_Jo$NAME))
