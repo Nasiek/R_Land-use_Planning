@@ -1353,3 +1353,45 @@ BD6_Trainset <- data.frame(
 BD6Train_Full <- merge(BD6_NJo, BD5TRAIN2, na.exclude = TRUE, by=c("Lat1", "Long1"))
 
 merge(x=BD6_NJo, y=BD5TRAIN2, by.x=c("Lat1","Long1"), by.y=c("Lat1","Long1"))
+
+#predicting values for 3 test sets.
+predict(single_ols)
+predict(ten_ols)
+predict(Rittenhouse_ols)
+
+#saving predictions
+N_hood10$predict <- predict(ten_ols)
+SINGLE$predict <- predict(single_ols)
+Rittenhouse$predict <- predict(Rittenhouse_ols)
+
+
+# Save the residual values
+
+SINGLE$residuals <- residuals(single_ols)
+N_hood10$residuals <- residuals(ten_ols)
+Rittenhouse$residuals <- residuals(Rittenhouse_ols)
+
+
+#save fitted values
+
+SINGLE$fitted_Value  <- fitted.values(single_ols)
+N_hood10$fitted_Value <- fitted.values(ten_ols)
+Rittenhouse$fitted_Value <- fitted.values(Rittenhouse_ols)
+
+
+#write these files for arcgis.
+write.csv(SINGLE, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/SINGLE.csv", append = FALSE, quote = TRUE, sep = ",",
+          eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+col.names = TRUE, qmethod = c("escape", "double"),
+fileEncoding = "")
+
+
+write.csv(N_hood10, file = "C:/Users/Keisan/Documents/CPLN590//MIDTERM/DATA/Random_Sample10.csv", append = FALSE, quote = TRUE, sep = ",",
+          eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+col.names = TRUE, qmethod = c("escape", "double"),
+fileEncoding = "")
+
+write.csv(Rittenhouse, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Rittenhouse.csv", append = FALSE, quote = TRUE, sep = ",",
+          eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+          col.names = TRUE, qmethod = c("escape", "double"),
+          fileEncoding = "")
