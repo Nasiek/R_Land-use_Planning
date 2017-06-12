@@ -188,7 +188,9 @@ Near_dist_col$FID.Main2 <- 1:nrow(Near_dist_col)
 
 head(Train85spread)
 #drop column by number
-BD6_Neighb_Jo <- BD6_Neighb_Jo[,-25]
+BD5TRAIN <- BD5TRAIN[,-18]
+
+
 BigData2 <- merge(x = Prop_Ind_Var, y = Neardist_col, by.x = "FID.Main", by.y = "FID.Main3", all = TRUE)
 
 #add dependent variable to dataframe
@@ -1288,7 +1290,7 @@ library(caret); df1 <- matrix(rnorm(100, ncol=10); colnames(df1) <- c(paste("V",
                               
                               #MAPE WITH na values
                               #calculate the MAPE - or mean absolute percent error aka MAPE
-                              mean(abs(BD5TRAIN$DP),na.rm = TRUE)   ### WORKS WELL.
+                              mean(abs(BD5TRAIN$Error),na.rm = TRUE)   ### WORKS WELL.
                               
                               #choose a single house 
                               
@@ -1312,3 +1314,29 @@ Rittenhouse <- BD6_Neighb_Jo[ sample( which(BD6_Neighb_Jo$NAME=='RITTENHOUSE'), 
 
 #lists unique items in a list
 unique(unlist(BD6_Neighb_Jo$NAME))
+unique(unlist(BD6_Neighb_Jo$NAME))
+
+#count the number of each unique item
+ddply(BD6_Neighb_JO,~NAME,summarise,number_of_distinct_orders=length(unique(order_no))) ## not quite
+
+Total_nhoods <- length(unique(BD6_Neighb_Jo$NAME))
+
+
+
+#new dataframe with rows as column names from another dataframe
+
+colnames(BD5TRAIN) <- neighborhoodMAPE[1, ]
+neighborhoodMAPE[1,119]
+
+
+The key here is to unlist the row first.
+colnames(BD6_Neighb_Jo) <- as.character(unlist(BD6_Neighb_Jo[1,])
+BD6_Neighb_Jo = BD6_Neighb_Jo[-1, ]
+
+#mpty dataframe with 5 column names
+
+Total_hoods <- as.data.frame(setNames(replicate(5,numeric(0), simplify = F), letters[1:5]))
+head(Total_hoods)
+unique(BD6_Neighb_Jo$NAME) <- Total_hoods[1, ]
+Total_hoods[1,] <- unique(BD6_Neighb_Jo)
+
