@@ -1340,3 +1340,16 @@ head(Total_hoods)
 unique(BD6_Neighb_Jo$NAME) <- Total_hoods[1, ]
 Total_hoods[1,] <- unique(BD6_Neighb_Jo)
 
+colnames(X)[2] <- "superduper" #changing column names
+
+tapply(X = BD6_Neighb_Jo$Error/df$HomePr, INDEX = df$Town, mean)
+
+
+#merge errors with neighborhoods
+
+BD6_Trainset <- data.frame(
+
+)
+BD6Train_Full <- merge(BD6_NJo, BD5TRAIN2, na.exclude = TRUE, by=c("Lat1", "Long1"))
+
+merge(x=BD6_NJo, y=BD5TRAIN2, by.x=c("Lat1","Long1"), by.y=c("Lat1","Long1"))
