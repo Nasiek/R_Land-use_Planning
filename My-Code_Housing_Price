@@ -28,8 +28,8 @@ library(dplyr)
 
 #how to import a file : 
 library(readr)
-BD6_Neighb_Jo <- read_csv("~/CPLN590/MIDTERM/DATA/BD6_Neighb_Jo.csv")
-View(BD6_Neighb_Jo)  
+BD5TRAIN2_jo2 <- read_csv("/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD5TRAIN2_jo2.csv")
+View(BD5TRAIN2_jo2)  
 
 
 head(BD5TRAIN)
@@ -47,7 +47,7 @@ Violations <- read.csv("C:/Users/Keisan/Downloads/LI_Violations2016.csv", header
 stringsAsFactors= TRUE,
 stringsAsFactors= TRUE,
 strip.white = TRUE)
-BD6_Neighb_Jo <- read.table("C:/Users/Keisan/DOcuments/CPLN590/MIDTERM/DATA/BD6_Neighb_Jo.csv", header = TRUE, fill = TRUE)
+BD5TRAIN2_jo2 <- read.table("C:/Users/Keisan/DOcuments/CPLN590/MIDTERM/DATA/BD5TRAIN2_jo2.csv", header = TRUE, fill = TRUE)
 separate(Violations, Location, c("Lat11", "Long11"), sep = " ")
 Violationstest2 <- gsub("POINT ", "", Violations$Location)
 vlocsplit= gsub("POINT", "", Location)
@@ -109,7 +109,7 @@ V2k16x <- cbind(V2k16x, data.frame(t(sapply(out, `[`))))
 names(after)[2:3] <- paste("type", 1:2, sep = "_")
 
 
-BD6_Neighb_Jo <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD6_Neighb_Jo.csv",header = TRUE , sep = ",")
+BD5TRAIN2_jo2 <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD5TRAIN2_jo2.csv",header = TRUE , sep = ",")
 Near_Retail <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_AllRetail.txt",
                           header = TRUE)
 Near_Retail <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_AllRetail.txt", header = TRUE)
@@ -208,7 +208,7 @@ write.csv(BD5TRAIN, file = "C:/Users/Keisan/Documents/CPLN590/bd5TRAIN_RESULTS.c
 #----------------------------------------Creating Training Dataset-------------------------
 
 #in case you need to reimport BigData3- 
-BD6_Neighb_Jo <- read.csv2("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD6_Neighb_Jo.csv", header = TRUE)
+BD5TEST2 <- read.csv2("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD5TEST.csv", header = TRUE)
 #make a copy of course ;)
 BD3 <- BigData3
 
@@ -510,15 +510,15 @@ library(AppliedPredictiveModeling)
 library(stargazer)
 library(dplyr)
 
-Violations2016 <- read.csv2("C:/Users/Keisan/Documents/CPLN590/Violations2016.csv",
+BD5TEST2 <- read.csv2("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD5TEST.csv",
                             header= FALSE) 
 
 Violations2 <- Violations %>% separate(Location, c("Lat", "Long"))
 Violations2 <- Violations %>% separate(Violations, Location, c("Lat", "Long"), sep = " ", remove = FALSE, convert = TRUE, extra = "warn", fill = "warn",)
-Violations2016 <- read.csv("C:/Users/Keisan/Documents/CPLN590/Violations2016.csv", header = TRUE, row.names = NULL)
+Violations2016 <- read.csv("C:/Users/Keisan/Documents/CPLN590/Violations2016.csv", header = TRUE)
 gsub( "POINT (", "", as.character(Violations$Location) n)
 Violations2 <- gsub("C([0-7]+)_.*", "\\1", Violations$Location)
-Property <- read.csv("C:/Users/Keisan/DOcuments/CPLN590/MIDTERM/DATA/Propertyfile.csv", header = TRUE, row.names = NULL)
+BD5TEST2 <- read.csv("C:/Users/Keisan/DOcuments/CPLN590/MIDTERM/DATA/BD5TEST.csv", header = TRUE, row.names = )
 View(Property)
 View(Property)
 View(Violations)
@@ -588,7 +588,7 @@ V2k16x <- cbind(V2k16x, data.frame(t(sapply(out, `[`))))
 names(after)[2:3] <- paste("type", 1:2, sep = "_")
 
 
-BD3 <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD3.csv",header = TRUE , sep = ",")
+BD5TEST2 <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD5TEST.csv",header = TRUE , sep = ",")
 Near_Retail <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_AllRetail.txt",
                           header = TRUE)
 Near_Retail <- read.table("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Near_AllRetail.txt", header = TRUE)
@@ -1395,3 +1395,45 @@ write.csv(Rittenhouse, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Ri
           eol = "\n", na = "NA", dec = ".", row.names = TRUE,
           col.names = TRUE, qmethod = c("escape", "double"),
           fileEncoding = "")
+# to export to get the neighborhood names. easier than trying to fig out in r
+
+write.csv(The_MAPE, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/The_Mape.csv", append = FALSE, quote = TRUE, sep = ",",
+          eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+col.names = TRUE, qmethod = c("escape", "double"),
+fileEncoding = "")
+
+
+
+
+#MAPE By Town
+
+library(dplyr); library(tibble)
+
+actual <- BDTR2$Sale_Pri_1
+forecasted <- BDTR2$predict
+###
+actual <- BDTR2$Sale_Pri_1
+forecasted <- BDTR2$predict
+
+mape <- function(actual, forecasted){
+x = 0.1*((actual - forecasted)/actual)*100
+return(x)
+}
+The_MAPE <- tibble(
+Sale_Price = c(BDTR2$Sale_Pri_1),
+Error = c(BDTR2$Error),
+NAME = c(as.character(BDTR2$NAME))
+) %>% 
+group_by(NAME) %>% 
+summarise(means_pr = mean(Sale_Price),
+means_err = mean(Error)) %>% 
+mutate(Mape = mape(means_pr, means_err))
+####
+
+
+BDTR2 <- BD5TRAIN2_jo2
+
+
+## another mape grouping option
+## both work :)
+tapply(X = BD5TRAIN2_jo2$Error/BD5TRAIN2_jo2$Sale_Pri_1, INDEX = BD5TRAIN2_jo2$NAME, mean)
