@@ -5,6 +5,7 @@ install.packages("caret")
 install.packages("AppliedPredictiveModeling")
 install.packages("stargazer")
 install.packages("dplyr")
+install.packages("plyr")
 install.packages("stringr")
 install.packages("lazyeval")
 install.packages("hexbin")
@@ -12,9 +13,10 @@ install.packages("devtools")
 
 install_github("mrdwabmisc", "mrdwab")
 
+library(plyr)
 library(devtools)
 library(hexbin)
-library(car)
+library(caret)
 library(sunflowerplot)
 library(lazyeval)
 library(stringr)
@@ -1048,16 +1050,20 @@ PART 4 - Cross validation time.-------------------------------------------------
   #Perform 10-fold cross validation
   #begin by specifying the type of resampling (cross validation)
   View(QTrain175)
-CrossVal1 <- trainControl(method = "cv", number = 10)
+CV_Sampletest <- trainControl(method = "cv", number = 10)
 str(QTrain175)
 #run the cross validation - note that here with the use of the '.' we are using all the variables in that dataframe
 #In other words, we are not writing the ind. variables out one by one.
 # DOES NOT WORK ////   >>>  
-linmodfit <- train(Sale_Pri_1 ~ ., data=QTrain175, method = "lm", trControl=fitControl,+linmodfit)
+mymodel <- train(Sale_Pri_1 ~ ., data=Sample_Test, method = "lm", trControl=fitControl,+mymodel)
 #^ remove NA values
 #removes a whole column :/  >   Qtr1 <- Qtr1[, colSums(is.na(Qtr1)) == 0]
 #This is the Cross validation test code
-library(caret); df1 <- matrix(rnorm(100),ncol=5); colnames(df1) <- c(paste("V",1:5,sep=""), "Sale_Pri_1"); linmodfit <- train(Sale_Pri_1 ~ ., data=df1, method = "lm")
+n <- names(Sample_Test)
+f <- as.formula(paste("y ~", paste(n[!n %in% "y"], collapse = " + ")))
+f
+
+library(caret); mymodel <- matrix(rnorm(100),ncol=10); f <- c(paste("V",1:5,sep=""), "Sale_Pri_1"); predictors <- train(na.omit(Sale_Pri_1 ~ ., data=Sample_Test, method = "lm"))
 
 #why did you get this warning?
 summary(linmodfit)
@@ -1068,7 +1074,7 @@ trainhouse5 <- trainhouse5[,-14] #removes one column from that data frame
 ### Trying CV Again#######################
 
 #Randomly shuffle the data
-ShuffleData<-QTrain175[sample(nrow(QTrain175)),]
+ShuffleData<-BD5TRAIN[sample(nrow(BD5TRAIN)),]
 
 #Create 10 equally size folds
 folds <- cut(seq(1,nrow(QTrain175)),breaks=10,labels=FALSE)
@@ -1300,7 +1306,7 @@ library(caret); df1 <- matrix(rnorm(100, ncol=10); colnames(df1) <- c(paste("V",
                               
                               #choose random sample 
                               dim(BD6)
-                              SINGLE <- BD6_Neighb_Jo[sample(nrow(BD6_Neighb_Jo), 1), ]
+Sample_Test <- BD5TRAIN[sample(nrow(BD5TRAIN), 2519), ]
                               head(SINGLE)
                               install.packages("devtools")
                               library(devtools)
@@ -1377,7 +1383,7 @@ Rittenhouse$residuals <- residuals(Rittenhouse_ols)
 SINGLE$fitted_Value  <- fitted.values(single_ols)
 N_hood10$fitted_Value <- fitted.values(ten_ols)
 Rittenhouse$fitted_Value <- fitted.values(Rittenhouse_ols)
-
+head(SINGLE)
 
 #write these files for arcgis.
 write.csv(SINGLE, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/SINGLE.csv", append = FALSE, quote = TRUE, sep = ",",
@@ -1437,3 +1443,111 @@ BDTR2 <- BD5TRAIN2_jo2
 ## another mape grouping option
 ## both work :)
 tapply(X = BD5TRAIN2_jo2$Error/BD5TRAIN2_jo2$Sale_Pri_1, INDEX = BD5TRAIN2_jo2$NAME, mean)
+
+#choose random sample 
+dim(BD6)
+Sample_Test <- BD5TRAIN[sample(nrow(BD5TRAIN), 2519), ]
+dim(Sample_Test)
+
+################################################## CARET Cross Validation  ###############################
+
+require(RCurl)
+require(prettyR)
+
+#save a workspace
+save.image("~/CPLN590/MIDTERM/DATA/Rworkspace_Steif_6-13-2017.RData")
+
+####
+
+classes <- Sample_Test[, "Sale_Pri_1"]
+predictors <- Sample_Test[, -match(c("Garage_Spa", "NEAR_DIST_TrafDat", "NEAR_DIST_HwyEx", "Total_Liva", "NEAR_DIST_Vac", 
+"NEAR_DIST_ComCor", "NEAR_DIST_LIViol", "NEAR_DIST_Retail", "NEAR_DIST_SeptST", "Tax_Land", "Tax_Build",na.action=na.omit), colnames(Sample_Test))]
+
+train_set <-createDataPartition(classes, p = 0.8, list = FALSE)
+str(train_set)#####
+#######################
+
+######################
+###################33
+####################################3
+
+
+
+
+##############################################################################################################
+
+
+
+# original example from Digg Data website (Takashi J. OZAKI, Ph. D.) 
+# http://diggdata.in/post/58333540883/k-fold-cross-validation-in-r
+
+
+library(plyr)
+install.packages(randomForest)
+library(randomForest)
+
+data <- iris
+
+# in this cross validation example, we use the iris data set to 
+# predict the Sepal Length from the other variables in the dataset 
+# with the random forest model 
+
+k = 5 #Folds
+
+# sample from 1 to k, nrow times (the number of observations in the data)
+Sample_Test$SalePri_1 <- sample(1:k, nrow(Sample_Test), replace = TRUE)
+list <- 1:k
+
+# prediction and testset data frames that we add to with each iteration over
+# the folds
+
+prediction <- data.frame()
+testsetCopy <- data.frame()
+
+#Creating a progress bar to know the status of CV
+progress.bar <- create_progress_bar("Progress_Bar")
+progress.bar$init(k)
+
+for (i in 1:k){
+# remove rows with id i from dataframe to create training set
+# select rows with id i to create test set
+trainingset <- subset(Sample_Test, Sale_Pri_1 %in% list[-i])
+testset <- subset(Sample_Test, Sale_Pri_1 %in% c(i))}
+
+# run a random forest model
+if(all(is.na(Sample_Test)) return(NA))
+mymodel <- lm(trainingset$Sale_Pri_1 ~ ., data = trainingset, ntree = 100)
+
+# remove response column 1, Sepal.Length
+temp <- as.data.frame(predict(mymodel, testset[,-1]))
+# append this iteration's predictions to the end of the prediction data frame
+prediction <- rbind(prediction, temp)
+
+# append this iteration's test set to the test set copy data frame
+# keep only the Sepal Length Column
+testsetCopy <- rbind(testsetCopy, as.data.frame(testset[,1]))
+
+progress.bar$step()
+}
+
+# add predictions and actual Sepal Length values
+result <- cbind(prediction, testsetCopy[, 1])
+names(result) <- c("Predicted", "Actual")
+result$Difference <- abs(result$Actual - result$Predicted)
+
+# As an example use Mean Absolute Error as Evalution 
+summary(result$Difference)
+
+library(boot)
+k    <- 5
+GLM_ST_ols  <- glm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST_Vac + NEAR_DIST_ComCor +
+NEAR_DIST_LIViol + NEAR_DIST_Retail + NEAR_DIST_SeptST + 
+NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + Tax_Build + Tax_Land, data = Sample_Test, 
+na.action=na.omit, family=gaussian(link="identity"))
+
+##glmFit <- glm(Y ~ X1 + X2 + X3, data=dfRegr,
+              family=gaussian(link="identity"))
+
+kfCV <- cv.glm(data=BD88, glmfit=glmfit, K=k)
+kfCV$delta
+
