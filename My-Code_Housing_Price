@@ -513,7 +513,7 @@ library(stargazer)
 library(dplyr)
 
 BD5TEST2 <- read.csv2("C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/BD5TEST.csv",
-                            header= FALSE) 
+                      header= FALSE) 
 
 Violations2 <- Violations %>% separate(Location, c("Lat", "Long"))
 Violations2 <- Violations %>% separate(Violations, Location, c("Lat", "Long"), sep = " ", remove = FALSE, convert = TRUE, extra = "warn", fill = "warn",)
@@ -1077,14 +1077,14 @@ trainhouse5 <- trainhouse5[,-14] #removes one column from that data frame
 ShuffleData<-BD5TRAIN[sample(nrow(BD5TRAIN)),]
 
 #Create 10 equally size folds
-folds <- cut(seq(1,nrow(QTrain175)),breaks=10,labels=FALSE)
+folds <- cut(seq(1,nrow(Sample_Test)),breaks=10,labels=FALSE)
 
 #Perform 10 fold cross validation
 for(i in 1:10){
   #Segement your data by fold using the which() function 
   testIndexes <- which(folds==i,arr.ind=TRUE)
-  TesteData <- QTrain175[testIndexes, ]
-  TrainneData <- QTrain175[-testIndexes, ]
+  TesteData <- Sample_Test[testIndexes, ]
+  TrainneData <- Sample_Test[-testIndexes, ]
   #Use the test and train data partitions however you desire...
 }
 #########################################////   RMSE,  MAE,  R^2 ////##########################################
@@ -1143,7 +1143,7 @@ names(Quick_Test)
 
 
 #plot the residuals against the predicted and observed
-xyplot(residuals(OLS_1) ~ predict(OLS_1), type = c("p", "g"), xlab = "Predicted", ylab = "Residuals", col.line = "red")
+xyplot(residuals(model) ~ predict(model), type = c("p", "g"), xlab = "Predicted", ylab = "Residuals", col.line = "red")
 # not working >  
 xyplot(resid(OLS_1) ~ QTrain175$Sale_Pri_1, type = c("p", "g"), xlab = "Observed", ylab = "Residuals", col.line = "red")
 #Step 2: obtain predicted and residual values
@@ -1183,8 +1183,8 @@ train_control <- trainControl(method="cv", number=10)
 # fix the parameters of the algorithm
 grid <- expand.grid(.fL=c(0), .usekernel=c(FALSE))
 # train the model
-model <- train(Sale_Pri_1~., data=QTrain175, trControl=train_control, method="nb", tuneGrid=grid)
-# summarize results
+model <- train(Sale_Pri_1~., data=Sample_Test, trControl=train_control, method="nb", tuneGrid=grid)
+11# summarize results
 print(df1)
 library(caret); df1 <- matrix(rnorm(100, ncol=10); colnames(df1) <- c(paste("V", 1:10,12, sep=""), "Sale_Pri_1"); linmodfit <- train(Sale_Pri_1 ~ .,data=df1,method = "lm")
                               #output file to csv-   
@@ -1306,187 +1306,251 @@ library(caret); df1 <- matrix(rnorm(100, ncol=10); colnames(df1) <- c(paste("V",
                               
                               #choose random sample 
                               dim(BD6)
-Sample_Test <- BD5TRAIN[sample(nrow(BD5TRAIN), 2519), ]
+                              Sample_Test <- BD5TRAIN[sample(nrow(BD5TRAIN), 2519), ]
                               head(SINGLE)
                               install.packages("devtools")
                               library(devtools)
                               install_github("mrdwabmisc", "mrdwab")
-
-## nto working >  can't find sratified function
-#stratified(BD6_Neighb_Jo, group="NAME", size=., select=list(NAME = "RITTENHOUSE"))
-
-Rittenhouse <- BD6_Neighb_Jo[ sample( which(BD6_Neighb_Jo$NAME=='RITTENHOUSE'), round(1.0*length(which(BD6_Neighb_Jo$NAME=='RITTENHOUSE')))), ]
-
-
-#lists unique items in a list
-unique(unlist(BD6_Neighb_Jo$NAME))
-unique(unlist(BD6_Neighb_Jo$NAME))
-
-#count the number of each unique item
-ddply(BD6_Neighb_JO,~NAME,summarise,number_of_distinct_orders=length(unique(order_no))) ## not quite
-
-Total_nhoods <- length(unique(BD6_Neighb_Jo$NAME))
-
-
-
-#new dataframe with rows as column names from another dataframe
-
-colnames(BD5TRAIN) <- neighborhoodMAPE[1, ]
-neighborhoodMAPE[1,119]
-
-
-The key here is to unlist the row first.
-colnames(BD6_Neighb_Jo) <- as.character(unlist(BD6_Neighb_Jo[1,])
-BD6_Neighb_Jo = BD6_Neighb_Jo[-1, ]
-
-#mpty dataframe with 5 column names
-
-Total_hoods <- as.data.frame(setNames(replicate(5,numeric(0), simplify = F), letters[1:5]))
-head(Total_hoods)
-unique(BD6_Neighb_Jo$NAME) <- Total_hoods[1, ]
-Total_hoods[1,] <- unique(BD6_Neighb_Jo)
-
-colnames(X)[2] <- "superduper" #changing column names
-
-tapply(X = BD6_Neighb_Jo$Error/df$HomePr, INDEX = df$Town, mean)
-
-
-#merge errors with neighborhoods
-
-BD6_Trainset <- data.frame(
-
-)
-BD6Train_Full <- merge(BD6_NJo, BD5TRAIN2, na.exclude = TRUE, by=c("Lat1", "Long1"))
-
-merge(x=BD6_NJo, y=BD5TRAIN2, by.x=c("Lat1","Long1"), by.y=c("Lat1","Long1"))
-
-#predicting values for 3 test sets.
-predict(single_ols)
-predict(ten_ols)
-predict(Rittenhouse_ols)
-
-#saving predictions
-N_hood10$predict <- predict(ten_ols)
-SINGLE$predict <- predict(single_ols)
-Rittenhouse$predict <- predict(Rittenhouse_ols)
-
-
-# Save the residual values
-
-SINGLE$residuals <- residuals(single_ols)
-N_hood10$residuals <- residuals(ten_ols)
-Rittenhouse$residuals <- residuals(Rittenhouse_ols)
-
-
-#save fitted values
-
-SINGLE$fitted_Value  <- fitted.values(single_ols)
-N_hood10$fitted_Value <- fitted.values(ten_ols)
-Rittenhouse$fitted_Value <- fitted.values(Rittenhouse_ols)
-head(SINGLE)
-
-#write these files for arcgis.
-write.csv(SINGLE, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/SINGLE.csv", append = FALSE, quote = TRUE, sep = ",",
-          eol = "\n", na = "NA", dec = ".", row.names = TRUE,
-col.names = TRUE, qmethod = c("escape", "double"),
-fileEncoding = "")
-
-
-write.csv(N_hood10, file = "C:/Users/Keisan/Documents/CPLN590//MIDTERM/DATA/Random_Sample10.csv", append = FALSE, quote = TRUE, sep = ",",
-          eol = "\n", na = "NA", dec = ".", row.names = TRUE,
-col.names = TRUE, qmethod = c("escape", "double"),
-fileEncoding = "")
-
-write.csv(Rittenhouse, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Rittenhouse.csv", append = FALSE, quote = TRUE, sep = ",",
-          eol = "\n", na = "NA", dec = ".", row.names = TRUE,
-          col.names = TRUE, qmethod = c("escape", "double"),
-          fileEncoding = "")
-# to export to get the neighborhood names. easier than trying to fig out in r
-
-write.csv(The_MAPE, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/The_Mape.csv", append = FALSE, quote = TRUE, sep = ",",
-          eol = "\n", na = "NA", dec = ".", row.names = TRUE,
-col.names = TRUE, qmethod = c("escape", "double"),
-fileEncoding = "")
-
-
-
-
-#MAPE By Town
-
-library(dplyr); library(tibble)
-
-actual <- BDTR2$Sale_Pri_1
-forecasted <- BDTR2$predict
-###
-actual <- BDTR2$Sale_Pri_1
-forecasted <- BDTR2$predict
-
-mape <- function(actual, forecasted){
-x = 0.1*((actual - forecasted)/actual)*100
-return(x)
-}
-The_MAPE <- tibble(
-Sale_Price = c(BDTR2$Sale_Pri_1),
-Error = c(BDTR2$Error),
-NAME = c(as.character(BDTR2$NAME))
-) %>% 
-group_by(NAME) %>% 
-summarise(means_pr = mean(Sale_Price),
-means_err = mean(Error)) %>% 
-mutate(Mape = mape(means_pr, means_err))
-####
-
-
-BDTR2 <- BD5TRAIN2_jo2
-
-
-## another mape grouping option
-## both work :)
-tapply(X = BD5TRAIN2_jo2$Error/BD5TRAIN2_jo2$Sale_Pri_1, INDEX = BD5TRAIN2_jo2$NAME, mean)
-
-#choose random sample 
-dim(BD6)
-Sample_Test <- BD5TRAIN[sample(nrow(BD5TRAIN), 2519), ]
-dim(Sample_Test)
-
-################################################## CARET Cross Validation  ###############################
-
-require(RCurl)
-require(prettyR)
-
-#save a workspace
-save.image("~/CPLN590/MIDTERM/DATA/Rworkspace_Steif_6-13-2017.RData")
-
-####
-
-classes <- Sample_Test[, "Sale_Pri_1"]
-predictors <- Sample_Test[, -match(c("Garage_Spa", "NEAR_DIST_TrafDat", "NEAR_DIST_HwyEx", "Total_Liva", "NEAR_DIST_Vac", 
-"NEAR_DIST_ComCor", "NEAR_DIST_LIViol", "NEAR_DIST_Retail", "NEAR_DIST_SeptST", "Tax_Land", "Tax_Build",na.action=na.omit), colnames(Sample_Test))]
-
-train_set <-createDataPartition(classes, p = 0.8, list = FALSE)
-str(train_set)#####
-#######################
-
-######################
-###################33
-####################################3
-
-
-
-
-##############################################################################################################
-
-
-
-# original example from Digg Data website (Takashi J. OZAKI, Ph. D.) 
-# http://diggdata.in/post/58333540883/k-fold-cross-validation-in-r
-
-
+                              
+                              ## nto working >  can't find sratified function
+                              #stratified(BD6_Neighb_Jo, group="NAME", size=., select=list(NAME = "RITTENHOUSE"))
+                              
+                              Rittenhouse <- BD6_Neighb_Jo[ sample( which(BD6_Neighb_Jo$NAME=='RITTENHOUSE'), round(1.0*length(which(BD6_Neighb_Jo$NAME=='RITTENHOUSE')))), ]
+                              
+                              
+                              #lists unique items in a list
+                              unique(unlist(BD6_Neighb_Jo$NAME))
+                              unique(unlist(BD6_Neighb_Jo$NAME))
+                              
+                              #count the number of each unique item
+                              ddply(BD6_Neighb_JO,~NAME,summarise,number_of_distinct_orders=length(unique(order_no))) ## not quite
+                              
+                              Total_nhoods <- length(unique(BD6_Neighb_Jo$NAME))
+                              
+                              
+                              
+                              #new dataframe with rows as column names from another dataframe
+                              
+                              colnames(BD5TRAIN) <- neighborhoodMAPE[1, ]
+                              neighborhoodMAPE[1,119]
+                              
+                              
+                              The key here is to unlist the row first.
+                              colnames(BD6_Neighb_Jo) <- as.character(unlist(BD6_Neighb_Jo[1,])
+                              BD6_Neighb_Jo = BD6_Neighb_Jo[-1, ]
+                              
+                              #mpty dataframe with 5 column names
+                              
+                              Total_hoods <- as.data.frame(setNames(replicate(5,numeric(0), simplify = F), letters[1:5]))
+                              head(Total_hoods)
+                              unique(BD6_Neighb_Jo$NAME) <- Total_hoods[1, ]
+                              Total_hoods[1,] <- unique(BD6_Neighb_Jo)
+                              
+                              colnames(X)[2] <- "superduper" #changing column names
+                              
+                              tapply(X = BD6_Neighb_Jo$Error/df$HomePr, INDEX = df$Town, mean)
+                              
+                              
+                              #merge errors with neighborhoods
+                              
+                              BD6_Trainset <- data.frame(
+                              
+                              )
+                              BD6Train_Full <- merge(BD6_NJo, BD5TRAIN2, na.exclude = TRUE, by=c("Lat1", "Long1"))
+                              
+                              merge(x=BD6_NJo, y=BD5TRAIN2, by.x=c("Lat1","Long1"), by.y=c("Lat1","Long1"))
+                              
+                              #predicting values for 3 test sets.
+                              predict(single_ols)
+                              predict(ten_ols)
+                              predict(Rittenhouse_ols)
+                              
+                              #saving predictions
+                              N_hood10$predict <- predict(ten_ols)
+                              SINGLE$predict <- predict(single_ols)
+                              Rittenhouse$predict <- predict(Rittenhouse_ols)
+                              
+                              
+                              # Save the residual values
+                              
+                              SINGLE$residuals <- residuals(single_ols)
+                              N_hood10$residuals <- residuals(ten_ols)
+                              Rittenhouse$residuals <- residuals(Rittenhouse_ols)
+                              
+                              
+                              #save fitted values
+                              
+                              SINGLE$fitted_Value  <- fitted.values(single_ols)
+                              N_hood10$fitted_Value <- fitted.values(ten_ols)
+                              Rittenhouse$fitted_Value <- fitted.values(Rittenhouse_ols)
+                              head(SINGLE)
+                              
+                              #write these files for arcgis.
+write.csv(Sample_Test, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Sample_Test.csv", append = FALSE, quote = TRUE, sep = ",", eol = "\n", na = "NA", dec = ".", row.names = TRUE, col.names = TRUE, qmethod = c("escape", "double"), fileEncoding = "")
+                              
+                              
+                              write.csv(N_hood10, file = "C:/Users/Keisan/Documents/CPLN590//MIDTERM/DATA/Random_Sample10.csv", append = FALSE, quote = TRUE, sep = ",",
+                              eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+                              col.names = TRUE, qmethod = c("escape", "double"),
+                              fileEncoding = "")
+                              
+                              write.csv(Rittenhouse, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/Rittenhouse.csv", append = FALSE, quote = TRUE, sep = ",",
+                              eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+                              col.names = TRUE, qmethod = c("escape", "double"),
+                              fileEncoding = "")
+                              # to export to get the neighborhood names. easier than trying to fig out in r
+                              
+                              write.csv(The_MAPE, file = "C:/Users/Keisan/Documents/CPLN590/MIDTERM/DATA/The_Mape.csv", append = FALSE, quote = TRUE, sep = ",",
+                              eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+                              col.names = TRUE, qmethod = c("escape", "double"),
+                              fileEncoding = "")
+                              
+                              
+                              
+                              
+                              #MAPE By Town
+                              
+                              library(dplyr); library(tibble)
+                              
+                              actual <- BDTR2$Sale_Pri_1
+                              forecasted <- BDTR2$predict
+                              ###
+                              actual <- BDTR2$Sale_Pri_1
+                              forecasted <- BDTR2$predict
+                              
+                              mape <- function(actual, forecasted){
+                              x = 0.1*((actual - forecasted)/actual)*100
+                              return(x)
+                              }
+                              The_MAPE <- tibble(
+                              Sale_Price = c(BDTR2$Sale_Pri_1),
+                              Error = c(BDTR2$Error),
+                              NAME = c(as.character(BDTR2$NAME))
+                              ) %>% 
+                              group_by(NAME) %>% 
+                              summarise(means_pr = mean(Sale_Price),
+                              means_err = mean(Error)) %>% 
+                              mutate(Mape = mape(means_pr, means_err))
+                              ####
+                              
+                              
+                              BDTR2 <- BD5TRAIN2_jo2
+                              
+                              
+                              ## another mape grouping option
+                              ## both work :)
+                              tapply(X = BD5TRAIN2_jo2$Error/BD5TRAIN2_jo2$Sale_Pri_1, INDEX = BD5TRAIN2_jo2$NAME, mean)
+                              
+                              #choose random sample 
+                              dim(BD6)
+                              Sample_Test <- BD5TRAIN[sample(nrow(BD5TRAIN), 2519), ]
+                              dim(Sample_Test)
+                              
+                              ################################################## CARET Cross Validation  ###############################
+                              
+                              require(RCurl)
+                              require(prettyR)
+                              
+                              #save a workspace
+                              save.image("~/CPLN590/MIDTERM/DATA/Rworkspace_Steif_6-13-2017.RData")
+                              
+                              ####
+                              
+                              classes <- Sample_Test[, "Sale_Pri_1"]
+predictors <- Sample_Test[, -match(c("Garage_Spa", "NEAR_DIST_TrafDat", "NEAR_DIST_HwyEx", "Total_Liva", "NEAR_DIST_Vac","NEAR_DIST_ComCor", "NEAR_DIST_LIViol", "NEAR_DIST_Retail", "NEAR_DIST_SeptST", "Tax_Land", "Tax_Build",na.action=na.omit), colnames(Sample_Test))]
+                              
+                              train_set <-createDataPartition(classes, p = 0.8, list = FALSE)
+                              str(train_set)#####
+                              #######################
+                              
+                              ######################
+                              ###################33
+                              ####################################3
+                              
+                              
+                              
+                              
+                              ##############################################################################################################
+                              
+                              
+                              
+                              # original example from Digg Data website (Takashi J. OZAKI, Ph. D.) 
+                              # http://diggdata.in/post/58333540883/k-fold-cross-validation-in-r
+                              
+                              
+                              library(plyr)
+                              install.packages(randomForest)
+                              library(randomForest)
+                              
+                              data <- iris
+                              
+                              # in this cross validation example, we use the iris data set to 
+                              # predict the Sepal Length from the other variables in the dataset 
+                              # with the random forest model 
+                              
+                              k = 5 #Folds
+                              
+                              # sample from 1 to k, nrow times (the number of observations in the data)
+                              Sample_Test$SalePri_1 <- sample(1:k, nrow(Sample_Test), replace = TRUE)
+                              list <- 1:k
+                              
+                              # prediction and testset data frames that we add to with each iteration over
+                              # the folds
+                              
+                              prediction <- data.frame()
+                              testsetCopy <- data.frame()
+                              
+                              #Creating a progress bar to know the status of CV
+                              progress.bar <- create_progress_bar("Progress_Bar")
+                              progress.bar$init(k)
+                              
+                              for (i in 1:k){
+                              # remove rows with id i from dataframe to create training set
+                              # select rows with id i to create test set
+                              trainingset <- subset(Sample_Test, Sale_Pri_1 %in% list[-i])
+                              testset <- subset(Sample_Test, Sale_Pri_1 %in% c(i))}
+                              
+                              # run a random forest model
+                              if(all(is.na(Sample_Test)) return(NA))
+                              mymodel <- lm(trainingset$Sale_Pri_1 ~ ., data = trainingset, ntree = 100)
+                              
+                              # remove response column 1, Sepal.Length
+                              temp <- as.data.frame(predict(mymodel, testset[,-1]))
+                              # append this iteration's predictions to the end of the prediction data frame
+                              prediction <- rbind(prediction, temp)
+                              
+                              # append this iteration's test set to the test set copy data frame
+                              # keep only the Sepal Length Column
+                              testsetCopy <- rbind(testsetCopy, as.data.frame(testset[,1]))
+                              
+                              progress.bar$step()
+                              }
+                              
+                              # add predictions and actual Sepal Length values
+                              result <- cbind(prediction, testsetCopy[, 1])
+                              names(result) <- c("Predicted", "Actual")
+                              result$Difference <- abs(result$Actual - result$Predicted)
+                              
+                              # As an example use Mean Absolute Error as Evalution 
+                              summary(result$Difference)
+                              
+                              library(boot)
+                              k    <- 10
+                              GLM_ST_ols  <- glm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST_Vac + NEAR_DIST_ComCor +
+                              NEAR_DIST_LIViol + NEAR_DIST_Retail + NEAR_DIST_SeptST + 
+                              NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + Tax_Build + Tax_Land, data = Sample_Test, 
+                              na.action=na.omit, family=gaussian(link="identity"))
+                              
+                              ##glmFit <- glm(Y ~ X1 + X2 + X3, data=dfRegr,
+                              family=gaussian(link="identity"))
+                              
+                              kfCV <- cv.glm(data=BD88, glmfit=glmfit, K=k)
+                              kfCV$delta
+summary(kfCV)
 library(plyr)
-install.packages(randomForest)
 library(randomForest)
 
-data <- iris
+data <- Sample_Test
 
 # in this cross validation example, we use the iris data set to 
 # predict the Sepal Length from the other variables in the dataset 
@@ -1495,7 +1559,7 @@ data <- iris
 k = 5 #Folds
 
 # sample from 1 to k, nrow times (the number of observations in the data)
-Sample_Test$SalePri_1 <- sample(1:k, nrow(Sample_Test), replace = TRUE)
+data$id <- sample(1:k, nrow(data), replace = TRUE)
 list <- 1:k
 
 # prediction and testset data frames that we add to with each iteration over
@@ -1505,49 +1569,124 @@ prediction <- data.frame()
 testsetCopy <- data.frame()
 
 #Creating a progress bar to know the status of CV
-progress.bar <- create_progress_bar("Progress_Bar")
+progress.bar <- create_progress_bar("Progress Bar")
 progress.bar$init(k)
 
 for (i in 1:k){
-# remove rows with id i from dataframe to create training set
-# select rows with id i to create test set
-trainingset <- subset(Sample_Test, Sale_Pri_1 %in% list[-i])
-testset <- subset(Sample_Test, Sale_Pri_1 %in% c(i))}
-
-# run a random forest model
-if(all(is.na(Sample_Test)) return(NA))
-mymodel <- lm(trainingset$Sale_Pri_1 ~ ., data = trainingset, ntree = 100)
-
-# remove response column 1, Sepal.Length
-temp <- as.data.frame(predict(mymodel, testset[,-1]))
-# append this iteration's predictions to the end of the prediction data frame
-prediction <- rbind(prediction, temp)
-
-# append this iteration's test set to the test set copy data frame
-# keep only the Sepal Length Column
-testsetCopy <- rbind(testsetCopy, as.data.frame(testset[,1]))
-
-progress.bar$step()
+  # remove rows with id i from dataframe to create training set
+  # select rows with id i to create test set
+  trainingset <- subset(data, id %in% list[-i])
+  testset <- subset(data, id %in% c(i))
+  View(trainingset)
+  # run a  model
+  mymodel <- lm(trainingset$Sale_Pri_1 ~ ., data = trainingset, ntree = 100)
+  summary(mymodel) 
+names(trainingset)
+  # remove response column 1, Sepal.Length
+  temp <- as.data.frame(predict(mymodel, testset[,20]))
+  # append this iteration's predictions to the end of the prediction data frame
+  prediction <- rbind(prediction, temp)
+  
+  # append this iteration's test set to the test set copy data frame
+  # keep only the Sepal Length Column
+  testsetCopy <- rbind(testsetCopy, as.data.frame(trainingse[,]))
+  trainingset$predictTestSet<- predict(mymodel)
+  progress.bar$step()
 }
-
+View(trainingset)
 # add predictions and actual Sepal Length values
-result <- cbind(prediction, testsetCopy[, 1])
+result <- cbind(prediction,trainingset$predictTestSet[, -21])
 names(result) <- c("Predicted", "Actual")
 result$Difference <- abs(result$Actual - result$Predicted)
 
 # As an example use Mean Absolute Error as Evalution 
 summary(result$Difference)
 
-library(boot)
-k    <- 5
-GLM_ST_ols  <- glm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST_Vac + NEAR_DIST_ComCor +
-NEAR_DIST_LIViol + NEAR_DIST_Retail + NEAR_DIST_SeptST + 
-NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + Tax_Build + Tax_Land, data = Sample_Test, 
-na.action=na.omit, family=gaussian(link="identity"))
+xyplot(log(residuals(model)) ~ log(predict(model)), type = c("p", "g"), xlab = "Predicted", ylab = "Residuals", col.line = "red")
+Warning message:
+In log(residuals(model)) : NaNs produced
+> xyplot(residuals(model) ~ predict(model), type = c("p", "g"), xlab = "Predicted", ylab = "Residuals", col.line = "red")
+> hist(residuals(model))
+> hist(predict(model))
+> hist(predict(log(model))
++ )
+Error in log(model) : non-numeric argument to mathematical function
+> hist(log(predict(model)))
+> xyplot(log(residuals(model)) ~ predict(model), type = c("p", "g"), xlab = "Predicted", ylab = "Residuals", col.line = "red")
+Warning message:
+In log(residuals(model)) : NaNs produced
+> k    <- 10
+> GLM_ST_ols  <- glm(Sale_Pri_1 ~ Garage_Spa + Total_Liva + NEAR_DIST_Vac + NEAR_DIST_ComCor +
++                               NEAR_DIST_LIViol + NEAR_DIST_Retail + NEAR_DIST_SeptST + 
++                               NEAR_DIST_TrafDat + NEAR_DIST_HwyEx + Tax_Build + Tax_Land, data = Sample_Test, 
++                               na.action=na.omit, family=gaussian(link="identity"))
+> kfCV <- cv.glm(data=BD88, glmfit=glmfit, K=k)
+Error: could not find function "cv.glm"
+> library(boot)
 
-##glmFit <- glm(Y ~ X1 + X2 + X3, data=dfRegr,
-              family=gaussian(link="identity"))
+Attaching package: ‘boot’
 
-kfCV <- cv.glm(data=BD88, glmfit=glmfit, K=k)
-kfCV$delta
+The following object is masked from ‘package:lattice’:
 
+    melanoma
+
+> kfCV <- cv.glm(data=BD88, glmfit=glmfit, K=k)
+> kfCV$delta
+[1] 38859501102 38856463003
+> summary(kfCV)
+      Length Class  Mode   
+call    4    -none- call   
+K       1    -none- numeric
+delta   2    -none- numeric
+seed  626    -none- numeric
+model <- train(Sale_Pri_1~., data=Sample_Test, trControl=train_control, method="nb", tuneGrid=grid)
+model<- train(Sale_Pri_1~., data=Sample_Test, trControl=train_control, method="rpart")
+grid <- expand.grid(.fL=c(0), .usekernel=c(FALSE))
+train_control <- trainControl(method="cv", number=10)
+library(caret)
+train_control<- trainControl(method="cv", number=10, savePredictions = TRUE)
+
+for(i in 1:10){
+  #Segement your data by fold using the which() function 
+  testIndexes <- which(folds==i,arr.ind=TRUE)
+  TesteData <- Sample_Test[testIndexes, ]
+  TrainneData <- Sample_Test[-testIndexes, ]
+  #Use the test and train data partitions however you desire...
+}
+folds <- cut(seq(1,nrow(Sample_Test)),breaks=10,labels=FALSE)
+predictors <- Sample_Test[, -match(c("Garage_Spa", "NEAR_DIST_TrafDat", "NEAR_DIST_HwyEx", "Total_Liva", "NEAR_DIST_Vac","NEAR_DIST_ComCor", "NEAR_DIST_LIViol", "NEAR_DIST_Retail", "NEAR_DIST_SeptST", "Tax_Land", "Tax_Build",na.action=na.omit), colnames(Sample_Test))]
+
+
+train_control<- trainControl(method="cv", number=10)
+> 
+> model<- train(Sale_Pri_1~., data=BD5TRAIN2, trControl=train_control, method="rpart")
+
+> model2<- train(Sale_Pri_1~., data=BD5TRAIN2, trControl=train_control, method="rpart")
+Warning message:
+In nominalTrainWorkflow(x = x, y = y, wts = weights, info = trainInfo,  :
+  There were missing values in resampled performance measures.
+> 
+> BD5TRAIN2$Model2_Predict <- predict(na.exclude(model2))
+> BD5TRAIN2$Model2_Fitted_Values <- fitted.values(na.exclude(model2))
+> BD5TRAIN2$Model2_Predict <- predict(na.exclude(model2))
+> confusionMatrix <- confusionMatrix(BD5TRAIN$Model2_Predict,BD5TRAIN2$Sale_Pri_1)
+Error in confusionMatrix.default(BD5TRAIN$Model2_Predict, BD5TRAIN2$Sale_Pri_1) : 
+  The data must contain some levels that overlap the reference.
+> 
+> confusionMatrix <- confusionMatrix(BD5TRAIN$Model2_Predict,na.exclude(BD5TRAIN2$Sale_Pri_1))
+Error in confusionMatrix.default(BD5TRAIN$Model2_Predict, na.exclude(BD5TRAIN2$Sale_Pri_1)) : 
+  The data must contain some levels that overlap the reference.
+> library(caret)
+
+library("e1071")
+Warning message:
+package ‘e1071’ was built under R version 3.3.3 
+> library(caret)
+> 
+> # Sample Data
+> predicted = BD5TRAIN2$Model2_Predict # Levels 1,2,3,4,5,6
+> reference = BD5TRAIN2$Sale_Pri_1 # Levels 1,2,3,4
+> 
+> u = union(predicted, reference)
+> t = table(factor(predicted, u), factor(reference, u))
+> confusionMatrix(t)
