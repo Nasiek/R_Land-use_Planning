@@ -1545,7 +1545,7 @@ predictors <- Sample_Test[, -match(c("Garage_Spa", "NEAR_DIST_TrafDat", "NEAR_DI
                               family=gaussian(link="identity"))
                               
                               kfCV <- cv.glm(data=BD88, glmfit=glmfit, K=k)
-                              kfCV$delta
+kfCV$delta
 summary(kfCV)
 library(plyr)
 library(randomForest)
@@ -1612,7 +1612,7 @@ In log(residuals(model)) : NaNs produced
 + )
 Error in log(model) : non-numeric argument to mathematical function
 > hist(log(predict(model)))
-> xyplot(log(residuals(model)) ~ predict(model), type = c("p", "g"), xlab = "Predicted", ylab = "Residuals", col.line = "red")
+xyplot(log(residuals(model2)) ~ predict(model), type = c("p", "g"), xlab = "Predicted", ylab = "Residuals", col.line = "red")
 Warning message:
 In log(residuals(model)) : NaNs produced
 > k    <- 10
@@ -1690,3 +1690,23 @@ package ‘e1071’ was built under R version 3.3.3
 > u = union(predicted, reference)
 > t = table(factor(predicted, u), factor(reference, u))
 > confusionMatrix(t)
+
+
+
+library(cvTools)
+## set up folds for cross-validation
+folds2 <- cvFolds(nrow(coleman), K = 10, R = 50)
+## compare LS, MM and LTS regression
+# perform cross-validation for an LS regression model
+#fitLm <- lm(Y ~ ., data = coleman)
+
+cvFitLm <- cvLm(BD5Trainols2, cost = rtmspe,
+folds = folds2, trim = 0.1)
+
+...
+
+# plot results for the MM regression model
+bwplot(cvFitLmrob)
+# plot combined results
+bwplot(cvFitLm)
+bwplot(BD5Trainols2)
